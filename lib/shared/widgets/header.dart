@@ -1,8 +1,6 @@
 import 'package:core_dashboard/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../theme/app_colors.dart';
 import '../constants/defaults.dart';
 import '../constants/ghaps.dart';
@@ -95,28 +93,6 @@ class Header extends StatelessWidget {
                             "https://cdn.create.vista.com/api/media/small/339818716/stock-photo-doubtful-hispanic-man-looking-with-disbelief-expression"),
                       ),
                     ),
-                  TextButton(
-                    onPressed: () => context.go('/sign-in'),
-                    style: TextButton.styleFrom(
-                      foregroundColor:
-                          Theme.of(context).textTheme.titleLarge!.color,
-                      minimumSize: const Size(80, 56),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(AppDefaults.borderRadius),
-                        ),
-                      ),
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    child: const Text("Sign In"),
-                  ),
-                  gapW16,
-                  ElevatedButton(
-                    onPressed: () => context.go('/register'),
-                    child: const Text("Sign Up"),
-                  ),
                 ],
               ),
             ),

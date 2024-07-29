@@ -2,6 +2,7 @@ import 'package:core_dashboard/shared/constants/defaults.dart';
 import 'package:core_dashboard/shared/widgets/tabs/tab_with_icon.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ThemeTabs extends StatefulWidget {
   const ThemeTabs({super.key});
@@ -21,6 +22,7 @@ class _ThemeTabsState extends State<ThemeTabs>
     _tabController = TabController(length: 2, vsync: this)
       ..addListener(() {
         setState(() {
+          Get.changeTheme(_tabController.index == 0 ? ThemeData.light() : ThemeData.dark());
           _selectedIndex = _tabController.index;
         });
       });
@@ -32,8 +34,8 @@ class _ThemeTabsState extends State<ThemeTabs>
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.bgLight,
         borderRadius: BorderRadius.circular(AppDefaults.borderRadius * 5),
+        border: Border.all(color: Colors.white)
       ),
       child: TabBar(
         controller: _tabController,
@@ -60,12 +62,12 @@ class _ThemeTabsState extends State<ThemeTabs>
         tabs: [
           TabWithIcon(
             isSelected: _selectedIndex == 0,
-            title: 'Light',
+            title: 'Claro',
             iconSrc: 'assets/icons/sun_filled.svg',
           ),
           TabWithIcon(
             isSelected: _selectedIndex == 1,
-            title: 'Dark',
+            title: 'Escuro',
             iconSrc: 'assets/icons/moon_light.svg',
           ),
         ],

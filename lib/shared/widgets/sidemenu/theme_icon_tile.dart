@@ -1,7 +1,6 @@
 import 'package:core_dashboard/shared/constants/defaults.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class ThemeIconTile extends StatefulWidget {
   const ThemeIconTile({super.key, this.isDark = false, this.onPressed});
@@ -47,17 +46,7 @@ class _ThemeIconTileState extends State<ThemeIconTile> {
             ],
           ),
           child: Center(
-            child: SvgPicture.asset(
-              widget.isDark
-                  ? 'assets/icons/moon_filled.svg'
-                  : 'assets/icons/sun_filled.svg',
-              height: 24,
-              width: 24,
-              colorFilter: const ColorFilter.mode(
-                AppColors.iconBlack,
-                BlendMode.srcIn,
-              ),
-            ),
+            child: Icon(widget.isDark ? Icons.dark_mode_outlined :Icons.light_mode),
           ),
         ),
       ),

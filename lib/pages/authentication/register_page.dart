@@ -3,7 +3,6 @@ import 'package:core_dashboard/shared/constants/config.dart';
 import 'package:core_dashboard/shared/constants/defaults.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import 'widgets/signup_benefits.dart';
@@ -34,7 +33,7 @@ class RegisterPage extends StatelessWidget {
                             horizontal: AppDefaults.padding,
                             vertical: AppDefaults.padding * 1.5,
                           ),
-                          child: SvgPicture.asset(AppConfig.logo),
+                          child: Image.asset(AppConfig.logo),
                         ),
 
                       /// SIGNUP BENEFITS
@@ -57,7 +56,7 @@ class RegisterPage extends StatelessWidget {
                                 horizontal: AppDefaults.padding,
                                 vertical: AppDefaults.padding * 1.5,
                               ),
-                              child: SvgPicture.asset(AppConfig.logo),
+                              child: Image.asset(AppConfig.logo),
                             )
                           : const SizedBox(),
 

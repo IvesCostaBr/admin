@@ -2,8 +2,6 @@ import 'package:core_dashboard/shared/constants/config.dart';
 import 'package:core_dashboard/shared/constants/defaults.dart';
 import 'package:core_dashboard/shared/constants/ghaps.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'social_login_button.dart';
 
 class SignInForm extends StatelessWidget {
@@ -21,7 +19,7 @@ class SignInForm extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               vertical: AppDefaults.padding * 1.5,
             ),
-            child: SvgPicture.asset(AppConfig.logo),
+            child: Image.asset(AppConfig.logo),
           ),
           Text(
             'Sign In',

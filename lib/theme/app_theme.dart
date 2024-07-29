@@ -61,4 +61,60 @@ class AppTheme {
           BadgeThemeData(backgroundColor: AppColors.error, smallSize: 8),
     );
   }
+
+  static ThemeData dark(BuildContext context) {
+    return ThemeData(
+      scaffoldBackgroundColor: AppColors.bgDark,
+      drawerTheme: const DrawerThemeData(
+        backgroundColor: AppColors.bgSecondaryDark,
+        surfaceTintColor: AppColors.bgSecondaryDark,
+      ),
+      primaryColor: AppColors.primary,
+      textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme)
+          .apply(
+              bodyColor: AppColors.titleDark,
+              displayColor: AppColors.titleDark)
+          .copyWith(
+            bodyLarge: const TextStyle(color: AppColors.textDark),
+            bodyMedium: const TextStyle(color: AppColors.textDark),
+            bodySmall: const TextStyle(color: AppColors.textDark),
+          ),
+      iconTheme: const IconThemeData(color: AppColors.iconDark),
+      dividerColor: AppColors.highlightDark,
+      dividerTheme: const DividerThemeData(
+        thickness: 1,
+        color: AppColors.highlightDark,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(100, 56),
+          elevation: 0,
+          foregroundColor: Colors.white,
+          backgroundColor: AppColors.primary,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(AppDefaults.borderRadius),
+            ),
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.titleDark,
+          minimumSize: const Size(100, 56),
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppDefaults.padding, vertical: AppDefaults.padding),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDefaults.borderRadius),
+          ),
+          side: BorderSide(color: AppColors.highlightDark, width: 2),
+        ),
+      ),
+      inputDecorationTheme: AppTextFormFieldTheme.darkInputDecorationTheme,
+      expansionTileTheme:
+          const ExpansionTileThemeData(shape: const RoundedRectangleBorder()),
+      badgeTheme:
+          BadgeThemeData(backgroundColor: AppColors.error, smallSize: 8),
+    );
+  }
 }

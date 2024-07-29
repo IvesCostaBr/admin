@@ -1,23 +1,26 @@
+import 'package:core_dashboard/controllers/config.dart';
+import 'package:core_dashboard/controllers/navigation.dart';
 import 'package:core_dashboard/pages/dashboard/widgets/theme_tabs.dart';
 import 'package:core_dashboard/responsive.dart';
-import 'package:core_dashboard/shared/constants/defaults.dart';
-import 'package:core_dashboard/shared/constants/ghaps.dart';
-import 'package:core_dashboard/shared/widgets/sidemenu/customer_info.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../../constants/config.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import '../../constants/defaults.dart';
+import '../../constants/ghaps.dart';
+import 'customer_info.dart';
 import 'menu_tile.dart';
 
+
 class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+  final configController = Get.find<ConfigController>();
+  Sidebar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final NavigationController navigationController = Get.find();
+    final appData = configController.appData.value;
     return Drawer(
-      // width: Responsive.isMobile(context) ? double.infinity : null,
-      // width: MediaQuery.of(context).size.width < 1300 ? 260 : null,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +45,7 @@ class Sidebar extends StatelessWidget {
                     horizontal: AppDefaults.padding,
                     vertical: AppDefaults.padding * 1.5,
                   ),
-                  child: SvgPicture.asset(AppConfig.logo),
+                  child: Image.network(appData!.data.logo),
                 ),
               ],
             ),
@@ -60,44 +63,15 @@ class Sidebar extends StatelessWidget {
                       title: "Home",
                       activeIconSrc: "assets/icons/home_filled.svg",
                       inactiveIconSrc: "assets/icons/home_light.svg",
-                      onPressed: () {},
+                      onPressed: () {
+                        navigationController.changePage("dashboard");
+                      },
                     ),
-                    ExpansionTile(
-                      leading:
-                          SvgPicture.asset("assets/icons/diamond_light.svg"),
-                      title: Text(
-                        "Products",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).textTheme.bodyMedium!.color,
-                        ),
-                      ),
-                      children: [
-                        MenuTile(
-                          isSubmenu: true,
-                          title: "Dashboard",
-                          onPressed: () {},
-                        ),
-                        MenuTile(
-                          isSubmenu: true,
-                          title: "Products",
-                          count: 16,
-                          onPressed: () {},
-                        ),
-                        MenuTile(
-                          isSubmenu: true,
-                          title: "Add Product",
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-
-                    // Customers
                     ExpansionTile(
                       leading: SvgPicture.asset(
                           "assets/icons/profile_circled_light.svg"),
                       title: Text(
-                        "Customers",
+                        "Configurações",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).textTheme.bodyMedium!.color,
@@ -106,27 +80,27 @@ class Sidebar extends StatelessWidget {
                       children: [
                         MenuTile(
                           isSubmenu: true,
-                          title: "Dashboard",
-                          onPressed: () {},
+                          title: "Geral",
+                          onPressed: () {
+                            navigationController.changePage("consumer-config");
+                          },
                         ),
                         MenuTile(
                           isSubmenu: true,
-                          title: "Products",
+                          title: "Telas",
                           count: 16,
-                          onPressed: () {},
+                          onPressed: () {
+                            navigationController.changePage("consumer-page");
+                          },
                         ),
                         MenuTile(
                           isSubmenu: true,
-                          title: "Add Product",
-                          onPressed: () {},
+                          title: "Traduções",
+                          onPressed: () {
+                            navigationController.changePage("");
+                          },
                         ),
                       ],
-                    ),
-                    MenuTile(
-                      title: "Shop",
-                      activeIconSrc: "assets/icons/store_light.svg",
-                      inactiveIconSrc: "assets/icons/store_filled.svg",
-                      onPressed: () {},
                     ),
                   ],
                 ),
@@ -159,7 +133,7 @@ class Sidebar extends StatelessWidget {
                       ),
                       gapW8,
                       Text(
-                        'Help & getting started',
+                        'Ajuda & Como utilizar',
                         style: Theme.of(context)
                             .textTheme
                             .labelMedium
@@ -190,5 +164,4 @@ class Sidebar extends StatelessWidget {
         ),
       ),
     );
-  }
-}
+  }}

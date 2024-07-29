@@ -2,7 +2,7 @@ import 'package:core_dashboard/shared/constants/config.dart';
 import 'package:core_dashboard/shared/constants/defaults.dart';
 import 'package:core_dashboard/shared/constants/ghaps.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import 'icon_tile.dart';
 import 'theme_icon_tile.dart';
@@ -22,7 +22,7 @@ class TabSidebar extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: AppDefaults.padding,
                 vertical: AppDefaults.padding * 1.5),
-            child: SvgPicture.asset(AppConfig.logo),
+            child: Image.asset(AppConfig.logo),
           ),
           gapH16,
           Expanded(
@@ -95,8 +95,10 @@ class TabSidebar extends StatelessWidget {
               ),
               gapH4,
               ThemeIconTile(
-                isDark: false,
-                onPressed: () {},
+                isDark: Get.isDarkMode,
+                onPressed: () {
+                  Get.changeTheme(Get.isDarkMode ? ThemeData.light() : ThemeData.dark());
+                },
               ),
               gapH16,
             ],

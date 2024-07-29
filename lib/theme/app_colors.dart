@@ -11,6 +11,14 @@ class AppColors {
   static const iconGrey = Color(0xFF9A9FA5);
   static const highlightLight = Color(0xFFEFEFEF);
 
+
+  static const Color bgDark = Color(0xFF121212);
+  static const Color bgSecondaryDark = Color(0xFF1E1E1E);
+  static const Color titleDark = Color(0xFFFFFFFF);
+  static const Color textDark = Color(0xFFBBBBBB);
+  static const Color iconDark = Color(0xFFCCCCCC);
+  static const Color highlightDark = Color(0xFF444444);
+
   static const primary = Color(0xFF2A85FF);
   static const primaryPurple = Color(0xFF8E59FF);
   static const success = Color(0xFF83BF6E);

@@ -1,3 +1,3 @@
 class AppConfig {
-  static const String logo = "assets/logo/Logo.svg";
+  static const String logo = "assets/logo/logo.png";
 }
