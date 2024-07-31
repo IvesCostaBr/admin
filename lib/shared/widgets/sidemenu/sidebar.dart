@@ -59,7 +59,7 @@ class Sidebar extends StatelessWidget {
                 child: ListView(
                   children: [
                     MenuTile(
-                      isActive: true,
+                      isActive: navigationController.currentPage.value == 'home' ? true : false,
                       title: "Home",
                       activeIconSrc: "assets/icons/home_filled.svg",
                       inactiveIconSrc: "assets/icons/home_light.svg",
@@ -98,6 +98,25 @@ class Sidebar extends StatelessWidget {
                           title: "Traduções",
                           onPressed: () {
                             navigationController.changePage("");
+                          },
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
+                      leading: const Icon(Icons.support_agent_rounded),
+                      title: Text(
+                        "Atendimento",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                      children: [
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Lista",
+                          onPressed: () {
+                            navigationController.changePage("list-suport");
                           },
                         ),
                       ],

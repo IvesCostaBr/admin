@@ -62,20 +62,7 @@ class EntryPoint extends StatelessWidget {
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 1360),
                           child: Obx(() {
-                            return ListView(
-                              children: [
-                                if (navigationController.isLoading.value) ...{
-                                  Padding(
-                                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.5),
-                                    child: const Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  )
-                                } else ...{
-                                  pageRoutes[navigationController.currentPage.value] ?? const DashboardPage()
-                                }
-                              ],
-                            );
+                            return pageRoutes[navigationController.currentPage.value] ?? ListView(children: [DashboardPage()]);
                           }),
                         ),
                       ),

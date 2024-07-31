@@ -22,7 +22,7 @@ class GenericContainer extends StatelessWidget {
             ),
           ],
         ),
-        child: SafeArea(child: content),
+        child: content,
       ),
     );
   }
