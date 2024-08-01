@@ -12,7 +12,7 @@ class SupportListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Support>>(
-      future: _chatService.getSuports(),
+      future: _chatService.getSuports("IN_OPEN"),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());

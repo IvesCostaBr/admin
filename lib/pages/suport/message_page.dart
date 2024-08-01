@@ -18,10 +18,10 @@ class SupportChatPage extends StatefulWidget {
 }
 
 class _SupportChatPageState extends State<SupportChatPage> {
-  final  _webSocketService = Get.find<ChatService>();
+  final _webSocketService = Get.find<ChatService>();
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  
+
   bool _isConnected = false;
   String _errorMessage = '';
   List<Message> _messages = [];
@@ -102,41 +102,78 @@ class _SupportChatPageState extends State<SupportChatPage> {
     }
   }
 
-  Future<void> _sendFile(File file) async {
+  Future<void> _sendFile(String senderName, String id, File file) async {
     final bytes = await file.readAsBytes();
     final base64File = base64Encode(bytes);
     final fileName = file.path.split('/').last;
-    final fileMessage = {
-      "event": "file",
-      "data": {
+    final fileExtension = fileName.split('.').last.toLowerCase();
+    final messageObject = Message(
+      event: 'file',
+      createdAt: (DateTime.now().millisecondsSinceEpoch / 1000).round(),
+      fileData: {
         "base64": base64File,
-        "name": fileName
-      }
-    };
-    _webSocketService.sendMessage(jsonEncode(fileMessage));
+        "name": fileName,
+        "extension": fileExtension
+      },
+      senderId: id,
+      senderName: senderName,
+    );
+
+    _webSocketService.sendMessage(jsonEncode(messageObject.toJson()));
+    setState(() {
+      _messages.add(messageObject);
+    });
   }
 
-  Future<void> _pickFile() async {
+  Future<void> _pickFile(String userName, String userId) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       File file = File(result.files.single.path!);
-      await _sendFile(file);
+      await _sendFile(userName, userId, file);
     }
   }
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(String userName, String userId) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       File file = File(pickedFile.path);
-      await _sendFile(file);
+      await _sendFile(userName, userId, file);
     }
+  }
+
+  void _showFullImage(String base64Image) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: MemoryImage(base64Decode(base64Image)),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _downloadFile(String base64File, String fileName) async {
+    final bytes = base64Decode(base64File);
+
+    // Notifica o usuário que o download foi concluído
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Download concluído: $fileName')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final userProvider = Get.find<UserProvider>();
     final userData = userProvider.userData;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Suporte'),
@@ -156,21 +193,32 @@ class _SupportChatPageState extends State<SupportChatPage> {
                         final message = _messages[index];
                         final isMine = message.senderId == userData!["id"];
                         return Align(
-                          alignment: isMine ? Alignment.centerRight : Alignment.centerLeft,
+                          alignment: isMine
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 14.0),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 14.0),
                             margin: const EdgeInsets.symmetric(vertical: 5.0),
                             decoration: BoxDecoration(
-                              color: isMine ? Colors.blue[200] : Colors.grey[300],
+                              color: isMine
+                                  ? Colors.blue[200]
+                                  : Colors.grey[300],
                               borderRadius: BorderRadius.only(
                                 topLeft: const Radius.circular(8.0),
                                 topRight: const Radius.circular(8.0),
-                                bottomLeft: isMine ? const Radius.circular(8.0) : const Radius.circular(0),
-                                bottomRight: isMine ? const Radius.circular(0) : const Radius.circular(8.0),
+                                bottomLeft: isMine
+                                    ? const Radius.circular(8.0)
+                                    : const Radius.circular(0),
+                                bottomRight: isMine
+                                    ? const Radius.circular(0)
+                                    : const Radius.circular(8.0),
                               ),
                             ),
                             child: Column(
-                              crossAxisAlignment: isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                              crossAxisAlignment: isMine
+                                  ? CrossAxisAlignment.end
+                                  : CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   message.senderName,
@@ -179,14 +227,45 @@ class _SupportChatPageState extends State<SupportChatPage> {
                                     color: Colors.black87,
                                   ),
                                 ),
-                                Text(
-                                  message.value,
-                                  style: const TextStyle(
-                                    color: Colors.black87,
+                                if (message.event == 'file' && message.fileData != null && ["jpg", "jpeg", "png"].contains(message.fileData!["extension"]))
+                                  // Renderiza a imagem base64
+                                  GestureDetector(
+                                    onTap: () => _showFullImage(message.fileData!["base64"]!),
+                                    child: Image.memory(
+                                      base64Decode(message.fileData!["base64"]!),
+                                      height: 150, // altura desejada da imagem
+                                      width: 150, // largura desejada da imagem
+                                      fit: BoxFit.cover, // ajusta a imagem para cobrir a área disponível
+                                    ),
+                                  )
+                                else if (message.event == 'file' && message.fileData != null)
+                                  // Renderiza o arquivo com um GestureDetector para download
+                                  GestureDetector(
+                                    onTap: () => _downloadFile(message.fileData!["base64"]!, message.fileData!["name"]!),
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.file_download),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          message.fileData!["name"]!,
+                                          style: const TextStyle(
+                                            color: Colors.blue,
+                                            decoration: TextDecoration.underline,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                else
+                                  Text(
+                                    message.value,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                    ),
                                   ),
-                                ),
+                                const SizedBox(height: 4.0),
                                 Text(
-                                  DateTime.fromMillisecondsSinceEpoch((message.createdAt * 1000).toInt()).toString(),
+                                  DateTime.fromMillisecondsSinceEpoch(message.createdAt * 1000).toString(),
                                   style: const TextStyle(
                                     fontSize: 10.0,
                                     color: Colors.black54,
@@ -199,57 +278,65 @@ class _SupportChatPageState extends State<SupportChatPage> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 16.0),
-                  _isChatClosed
-                      ? const Center(
-                          child: Text(
-                            'O Atendimento foi finalizado',
-                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                  if (_isChatClosed)
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'O chat foi encerrado.',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                        ),
+                      ),
+                    )
+                  else
+                    Column(
+                      children: <Widget>[
+                        TextField(
+                          controller: _messageController,
+                          decoration: const InputDecoration(
+                            hintText: 'Digite sua mensagem...',
+                            border: OutlineInputBorder(),
                           ),
-                        )
-                      : Row(
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
-                            Expanded(
-                              child: TextField(
-                                controller: _messageController,
-                                decoration: InputDecoration(
-                                  hintText: 'Digite sua mensagem...',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    borderSide: const BorderSide(
-                                      color: Colors.blue,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(50.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.grey[400]!,
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                            ElevatedButton(
+                              onPressed: () {
+                                _sendMessage(
+                                  userData!["name"],
+                                  userData["id"],
+                                );
+                              },
+                              child: const Text('Enviar'),
                             ),
                             IconButton(
                               icon: const Icon(Icons.attach_file),
-                              onPressed: _pickFile,
+                              onPressed: () => _pickFile(userData!["name"], userData["id"]),
                             ),
                             IconButton(
                               icon: const Icon(Icons.camera_alt),
-                              onPressed: _pickImage,
+                              onPressed: () => _pickImage(userData!["name"], userData["id"]),
                             ),
-                            const SizedBox(width: 8.0),
-                            ElevatedButton.icon(
-                              onPressed: () => {_sendMessage(userData!["name"], userData["id"])},
-                              icon: const Icon(Icons.send),
-                              label: const Text('Enviar', style: TextStyle(color: Colors.white)),
+                            ElevatedButton(
+                              onPressed: () {
+                                _webSocketService.sendMessage(jsonEncode({
+                                  "event": "close",
+                                }));
+                                setState(() {
+                                  _isChatClosed = true;
+                                });
+                              },
+                              child: const Text('Encerrar Chat'),
                             ),
                           ],
                         ),
+                      ],
+                    ),
                 ],
               )
             : Center(
