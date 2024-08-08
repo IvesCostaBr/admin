@@ -38,8 +38,6 @@ class DashboardPage extends StatelessWidget {
                   gapH16,
                   const ProductOverviews(),
                   gapH16,
-                  const ProTips(),
-                  gapH16,
                   const GetMoreCustomers(),
                   if (Responsive.isMobile(context))
                     const Column(
@@ -64,10 +62,10 @@ class DashboardPage extends StatelessWidget {
                   children: [
                     PopularProducts(),
                     gapH16,
-                    Comments(),
-                    gapH16,
-                    RefundRequest(newRefund: 8, totalRefund: 52),
-                    gapH8,
+                    // Comments(),
+                    // gapH16,
+                    // RefundRequest(newRefund: 8, totalRefund: 52),
+                    // gapH8,
                   ],
                 ),
               ),

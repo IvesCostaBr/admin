@@ -83,24 +83,24 @@ class FormStep {
 }
 
 class FormInput {
-  final String type;
-  final String name;
-  final String label;
-  final Uint8List? svg;
-  final String? mask;
-  final bool? required;
-  final String placeholder;
-  final String? rgexValidator;
+  String? type;
+  String? name;
+  String label;
+  String? placeHolder;
+  bool? required;
+  String? mask;
+  String? svg;
+  String? rgexValidator;
 
   FormInput({
-    required this.type,
-    required this.name,
+    this.type,
+    this.name,
     required this.label,
-    required this.placeholder,
-    this.svg,
+    this.placeHolder,
+    this.required,
     this.mask,
-    this.required = false,
-    this.rgexValidator
+    this.svg,
+    this.rgexValidator,
   });
 
   factory FormInput.fromJson(Map<String, dynamic> json) {
@@ -108,11 +108,24 @@ class FormInput {
       type: json['type'],
       name: json['name'],
       label: json['label'],
-      rgexValidator: json['rgex_validator'],
-      svg: json['svg'] != null ? base64.decode(json['svg'].split(',')[1]) : null,
+      placeHolder: json['place_holder'],
+      required: json['required'],
       mask: json['mask'],
-      required: json['required'] ?? false,
-      placeholder: json['place_holder'],
+      svg: json['svg'],
+      rgexValidator: json['rgex_validator'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'type': type,
+      'name': name,
+      'label': label,
+      'place_holder': placeHolder,
+      'required': required,
+      'mask': mask,
+      'svg': svg,
+      'rgex_validator': rgexValidator,
+    };
   }
 }

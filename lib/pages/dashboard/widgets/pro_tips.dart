@@ -56,11 +56,6 @@ class ProTips extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          gapH8,
-          const SectionTitle(
-            title: "Pro tips",
-            color: AppColors.secondaryMintGreen,
-          ),
           gapH20,
           Text(
             'Need some ideas for the next product?',

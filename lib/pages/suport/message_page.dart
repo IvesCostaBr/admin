@@ -292,51 +292,47 @@ class _SupportChatPageState extends State<SupportChatPage> {
                       ),
                     )
                   else
-                    Column(
+                    Container(
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Row(
                       children: <Widget>[
-                        TextField(
-                          controller: _messageController,
-                          decoration: const InputDecoration(
-                            hintText: 'Digite sua mensagem...',
-                            border: OutlineInputBorder(),
+                        IconButton(
+                          icon: const Icon(Icons.photo_camera),
+                          onPressed: () => _pickImage(
+                              userData!["name"], userData["id"]),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.attach_file),
+                          onPressed: () => _pickFile(
+                              userData!["name"], userData["id"]),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            controller: _messageController,
+                            style: const TextStyle(
+                              color: Colors.black
+                            ),
+                            decoration: InputDecoration(
+                              hintText: 'Digite sua mensagem...',
+                              hintStyle: const TextStyle(color: Colors.black),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            ElevatedButton(
-                              onPressed: () {
-                                _sendMessage(
-                                  userData!["name"],
-                                  userData["id"],
-                                );
-                              },
-                              child: const Text('Enviar'),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.attach_file),
-                              onPressed: () => _pickFile(userData!["name"], userData["id"]),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.camera_alt),
-                              onPressed: () => _pickImage(userData!["name"], userData["id"]),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                _webSocketService.sendMessage(jsonEncode({
-                                  "event": "close",
-                                }));
-                                setState(() {
-                                  _isChatClosed = true;
-                                });
-                              },
-                              child: const Text('Encerrar Chat'),
-                            ),
-                          ],
+                        IconButton(
+                          icon: const Icon(Icons.send, color: Colors.green,),
+                          onPressed: () => _sendMessage(
+                              userData!["name"], userData["id"]),
                         ),
                       ],
                     ),
+                  ),
                 ],
               )
             : Center(

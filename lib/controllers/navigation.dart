@@ -5,9 +5,6 @@ class NavigationController extends GetxController {
   var isLoading = false.obs;
 
   void changePage(String page) async {
-    isLoading.value = true;
-    await Future.delayed(Duration(seconds: 2));
     currentPage.value = page;
-    isLoading.value = false;
   }
 }

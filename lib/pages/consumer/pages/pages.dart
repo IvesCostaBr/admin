@@ -18,28 +18,51 @@ class _ConsumePagesConfigPageState extends State<ConsumePagesConfigPage> {
   Widget build(BuildContext context) {
     final appData = configController.appData.value;
 
-    return  GenericContainer(
-        content: Container(
-          height: 300,
-          width: 400,
-          child: ListView.builder(
-            itemCount: appData?.screens.length ?? 0,
-            itemBuilder: (context, index) {
-              final entry = appData!.screens.entries.elementAt(index);
-              final screenName = entry.key;
-              final screen = entry.value;
-                  
-              return ListTile(
-                title: Text(screenName),
-                subtitle: Text(screen.title?['value'] ?? 'No Title'),
-                onTap: () {
-                  Get.to(() => EditScreenForm(screenName: screenName, screen: screen));
-                },
-              );
-            },
-          ),
+    return GenericContainer(
+      content: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4, // Número de colunas no grid
+          crossAxisSpacing: 2, // Espaçamento horizontal entre os itens
+          mainAxisSpacing: 1.8, // Espaçamento vertical entre os itens
+          childAspectRatio: 1.4, // Proporção dos itens (largura/altura)
         ),
-    
+        itemCount: appData?.screens.length ?? 0,
+        itemBuilder: (context, index) {
+          final entry = appData!.screens.entries.elementAt(index);
+          final screenName = entry.key;
+          final screen = entry.value;
+      
+          return GestureDetector(
+            onTap: () {
+              Get.to(() => EditScreenForm(screen: screen));
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey), // Contorno cinza
+                borderRadius: BorderRadius.circular(8), // Bordas arredondadas
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.screen_share, size: 40, color: Colors.grey), // Ícone no topo
+                  SizedBox(height: 10),
+                  Text(
+                    screenName,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    screen.title?['value'] ?? 'No Title',
+                    style: TextStyle(color: Colors.grey),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

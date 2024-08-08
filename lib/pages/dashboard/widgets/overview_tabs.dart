@@ -72,34 +72,6 @@ class _OverviewTabsState extends State<OverviewTabs>
           ),
         ),
         gapH24,
-        SizedBox(
-          height: 280,
-          child: TabBarView(
-            controller: _tabController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: const [
-              Center(child: CoustomersOverview()),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: AppDefaults.padding * 1.5,
-                  vertical: AppDefaults.padding,
-                ),
-                child: RevenueLineChart(),
-              ),
-            ],
-          ),
-        ),
-        // SizedBox(
-        //   height: 240,
-        //   child: AnimatedCrossFade(
-        //     duration: const Duration(seconds: 3),
-        //     firstChild: CoustomersOverview(),
-        //     secondChild: const RevenueLineChart(),
-        //     crossFadeState: _selectedIndex == 0
-        //         ? CrossFadeState.showFirst
-        //         : CrossFadeState.showSecond,
-        //   ),
-        // )
       ],
     );
   }

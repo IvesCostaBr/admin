@@ -28,7 +28,6 @@ class SignupBenefits extends StatelessWidget {
               BenefitText(title: 'Plan includes', isTitle: true),
               gapH24,
               BenefitText(title: 'Unlimited product uploads'),
-              BenefitText(title: 'Pro tips'),
               BenefitText(title: 'Free forever'),
               BenefitText(title: 'Full author options'),
             ],
