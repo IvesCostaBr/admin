@@ -35,6 +35,7 @@ class Data {
   final String logo;
   final String extraLogo;
   final String version;
+  final String homePage;
 
   Data({
     required this.appName,
@@ -43,6 +44,7 @@ class Data {
     required this.logo,
     required this.extraLogo,
     required this.version,
+    required this.homePage
   });
 
   factory Data.fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class Data {
       logo: json['logo'],
       extraLogo: json['extra_logo'],
       version: json['version'],
+      homePage: json['home_page']
     );
   }
 }

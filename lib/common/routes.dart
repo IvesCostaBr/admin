@@ -6,6 +6,8 @@ import 'package:core_dashboard/pages/consumer/pages/pages.dart';
 import 'package:core_dashboard/pages/dashboard/dashboard_page.dart';
 import 'package:core_dashboard/pages/entry_point.dart';
 import 'package:core_dashboard/pages/suport/list_page.dart';
+import 'package:core_dashboard/pages/transaction/list_transactions.dart';
+import 'package:core_dashboard/pages/user/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,4 +25,6 @@ final Map<String, Widget> pageRoutes = {
   "consumer-config": ConsumerGeneralConfigPage(),
   "consumer-page": const ConsumePagesConfigPage(),
   "list-suport": SupportListPage(),
+  "list-users": const ListUsersPage(),
+  "list-transactions": const ListTransactionsPage()
 };

@@ -23,6 +23,8 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_colorpicker: ^1.0.3
   image_picker: ^0.8.4+4
+  flutter_json_viewer: ^1.0.1
+  json_editor_flutter: ^1.4.2
 
 dev_dependencies:
   flutter_test:

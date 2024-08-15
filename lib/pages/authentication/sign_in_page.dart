@@ -59,14 +59,9 @@ class _SignInPageState extends State<SignInPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: AppDefaults.padding * 1.5,
-                        ),
-                        child: Image.asset(AppConfig.logo),
-                      ),
+                      Image.asset(AppConfig.logo, fit: BoxFit.fill,),
                       Text(
-                        'Sign In',
+                        'Entrar',
                         style: Theme.of(context)
                             .textTheme
                             .headlineLarge
@@ -123,7 +118,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return 'Digite sua senha';
                           }
                           return null;
                         },
@@ -136,7 +131,7 @@ class _SignInPageState extends State<SignInPage> {
                               width: 296,
                               child: ElevatedButton(
                                 onPressed: _login,
-                                child: const Text('Sign in'),
+                                child: const Text('Entrar'),
                               ),
                             );
                       }),
@@ -145,9 +140,9 @@ class _SignInPageState extends State<SignInPage> {
                         return authService.errorMessage.value.isNotEmpty
                           ? Text(
                               authService.errorMessage.value,
-                              style: TextStyle(color: Colors.red),
+                              style: const TextStyle(color: Colors.red),
                             )
-                          : SizedBox.shrink();
+                          : const SizedBox.shrink();
                       }),
                       gapH24,
                       Text(

@@ -11,6 +11,7 @@ class GenericContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Container(
+        padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Get.isDarkMode ? Colors.grey : Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(12)),
@@ -23,7 +24,17 @@ class GenericContainer extends StatelessWidget {
                 ),
               ],
             ),
-            child: content,
+            child: Column(
+              children: [
+                Text(text ?? '', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                const SizedBox(height: 15,),
+                Expanded(
+              child: ListView(
+                children: [content],
+              ),
+            ),
+              ],
+            ),
           ),
     );
   }

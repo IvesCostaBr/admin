@@ -25,16 +25,51 @@ class ConfigController extends GetxController {
     }
   }
 
-  Future<void> upadateGeneralData(Map<String, String> data) async{
-
+  Future<bool> upadateGeneralData(Map<String, String> data) async{
+    try {
+      var response = await _dio.put(
+        '$baseurl/api/admin/consumers/config',
+        data: data  
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to load configuration');
+      }
+    } catch (e) {
+      return false;
+    }
   }
 
-
-  Future<void> upadateThemeData(Map<String, dynamic> data) async{
-
+  Future<bool> upadateThemeData(Map<String, dynamic> data) async{
+    try {
+      var response = await _dio.put(
+        '$baseurl/api/admin/consumers/theme',
+        data: data  
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to load configuration');
+      }
+    } catch (e) {
+      return false;
+    }
   }
 
-
-  void updateScreen(String screenName, Screen updatedScreen) {
+  Future<bool> updateScreen(String screenName, Map<String, dynamic> updatedScreen) async {
+    try {
+      var response = await _dio.put(
+        '$baseurl/api/admin/consumers/screens/$screenName',
+        data: updatedScreen  
+      );
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to load configuration');
+      }
+    } catch (e) {
+      return false;
+    }
   }
 }

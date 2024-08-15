@@ -15,7 +15,7 @@ class PinTag extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(12))
         
       ),
-      child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
+      child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
     );
   }
 }

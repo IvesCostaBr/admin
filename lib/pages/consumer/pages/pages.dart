@@ -19,22 +19,28 @@ class _ConsumePagesConfigPageState extends State<ConsumePagesConfigPage> {
     final appData = configController.appData.value;
 
     return GenericContainer(
+      text: "Telas",
       content: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(), // Desabilita o scroll interno
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, // Número de colunas no grid
-          crossAxisSpacing: 2, // Espaçamento horizontal entre os itens
+          crossAxisCount: 6, // Número de colunas no grid
+          crossAxisSpacing: 4.2, // Espaçamento horizontal entre os itens
           mainAxisSpacing: 1.8, // Espaçamento vertical entre os itens
-          childAspectRatio: 1.4, // Proporção dos itens (largura/altura)
+          childAspectRatio: 1.2, // Proporção dos itens (largura/altura)
         ),
         itemCount: appData?.screens.length ?? 0,
         itemBuilder: (context, index) {
           final entry = appData!.screens.entries.elementAt(index);
           final screenName = entry.key;
           final screen = entry.value;
-      
+
           return GestureDetector(
             onTap: () {
-              Get.to(() => EditScreenForm(screen: screen));
+              Get.to(() => EditScreenForm(
+                    initialData: screen.toJson(),
+                    screeName: screenName,
+                  ));
             },
             child: Container(
               decoration: BoxDecoration(
@@ -44,17 +50,17 @@ class _ConsumePagesConfigPageState extends State<ConsumePagesConfigPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.screen_share, size: 40, color: Colors.grey), // Ícone no topo
-                  SizedBox(height: 10),
+                  const Icon(Icons.screen_share, size: 40, color: Colors.grey), // Ícone no topo
+                  const SizedBox(height: 10),
                   Text(
                     screenName,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     screen.title?['value'] ?? 'No Title',
-                    style: TextStyle(color: Colors.grey),
+                    style: const TextStyle(color: Colors.grey),
                     textAlign: TextAlign.center,
                   ),
                 ],

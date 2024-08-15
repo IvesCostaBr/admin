@@ -18,83 +18,98 @@ class _SupportListPageState extends State<SupportListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: DropdownButton<String>(
-            value: _selectedStatus,
-            items: const [
-              DropdownMenuItem(
-                value: 'IN_OPEN',
-                child: Text('EM ABERTO'),
-              ),
-              DropdownMenuItem(
-                value: 'COMPLETED',
-                child: Text('FINALIZADO'),
-              ),
-              DropdownMenuItem(
-                value: 'IN_PROGRESS',
-                child: Text('EM ATENDIMENTO'),
-              ),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _selectedStatus = value!;
-              });
-            },
-          ),
-        ),
-        Expanded(
-          child: FutureBuilder<List<Support>>(
+    return 
+        GenericContainer(
+          text: "Atendimentos",
+          content: FutureBuilder<List<Support>>(
             future: _chatService.getSuports(_selectedStatus),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return const Column(
+                  children: [
+                    SizedBox(height: 240),
+                    Center(child: CircularProgressIndicator()),
+                  ],
+                );
               } else if (snapshot.hasError) {
                 return const Center(child: Text('Erro ao carregar suportes'));
               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return const Center(child: Text('Nenhum suporte encontrado'));
               } else {
                 final supports = snapshot.data!;
-                return GenericContainer(
-                  content: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('ID')),
-                        DataColumn(label: Text('Data de Criação')),
-                        DataColumn(label: Text('Data de Atualização')),
-                        DataColumn(label: Text('Status')),
-                      ],
-                      rows: supports.map((support) {
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              GestureDetector(
-                                child: Text(support.id),
-                                onTap: () {
-                                  Get.to(() => SupportChatPage(supportId: support.id));
-                                },
-                              ),
+                return  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: DropdownButton<String>(
+                          value: _selectedStatus,
+                          items: const [
+                            DropdownMenuItem(
+                              value: 'IN_OPEN',
+                              child: Text('EM ABERTO'),
                             ),
-                            DataCell(Text(DateFormat('dd/MM/yyyy HH:mm').format(support.createdAt!))),
-                            DataCell(support.updatedAt != null
-                                ? Text(DateFormat('dd/MM/yyyy HH:mm').format(support.updatedAt!))
-                                : const Text('')),
-                            DataCell(classifyStatus(support.status)),
+                            DropdownMenuItem(
+                              value: 'COMPLETED',
+                              child: Text('FINALIZADO'),
+                            ),
+                            DropdownMenuItem(
+                              value: 'IN_PROGRESS',
+                              child: Text('EM ATENDIMENTO'),
+                            ),
                           ],
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                );
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedStatus = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(label: Text('ID')),
+                            DataColumn(label: Text('Data de Criação')),
+                            DataColumn(label: Text('Data de Atualização')),
+                            DataColumn(label: Text('Usuário')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('Ação')),
+                          ],
+                          rows: supports.map((support) {
+                            return DataRow(
+                              cells: [
+                                DataCell(Text(support.id)),
+                                DataCell(Text(DateFormat('dd/MM/yyyy HH:mm').format(support.createdAt!))),
+                                DataCell(support.updatedAt != null
+                                    ? Text(DateFormat('dd/MM/yyyy HH:mm').format(support.updatedAt!))
+                                    : const Text('-')),
+                                DataCell(GestureDetector(
+                                  onTap: () {print("detail user");},
+                                  child: Column(children: [
+                                    Text(support.owner["name"] ?? '-'),
+                                    Text(support.owner["document"] ?? '-')
+                                  ],),
+                                )),
+                                DataCell(classifyStatus(support.status)),
+                                DataCell(
+                                  IconButton(
+                                    icon: const Icon(Icons.phone, color: Colors.green,),
+                                    onPressed: () => Get.to(() => SupportChatPage(supportId: support.id)),
+                                  )
+                                ),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ],
+                  );
               }
             },
           ),
-        ),
-      ],
-    );
+        );
   }
 
   Widget classifyStatus(String status) {

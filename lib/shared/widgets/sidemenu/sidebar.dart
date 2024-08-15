@@ -2,6 +2,7 @@ import 'package:core_dashboard/controllers/config.dart';
 import 'package:core_dashboard/controllers/navigation.dart';
 import 'package:core_dashboard/pages/dashboard/widgets/theme_tabs.dart';
 import 'package:core_dashboard/responsive.dart';
+import 'package:core_dashboard/shared/constants/config.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,7 +46,7 @@ class Sidebar extends StatelessWidget {
                     horizontal: AppDefaults.padding,
                     vertical: AppDefaults.padding * 1.5,
                   ),
-                  child: Image.network(appData!.data.logo),
+                  child: Image.network(AppConfig.logo, height: 150, width: 220,),
                 ),
               ],
             ),
@@ -68,8 +69,64 @@ class Sidebar extends StatelessWidget {
                       },
                     ),
                     ExpansionTile(
-                      leading: SvgPicture.asset(
-                          "assets/icons/profile_circled_light.svg"),
+                      leading: const Icon(Icons.person),
+                      title: Text(
+                        "Usuários",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                      children: [
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Geral",
+                          onPressed: () {
+                            navigationController.changePage("list-users");
+                          },
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
+                      leading: const Icon(Icons.monetization_on),
+                      title: Text(
+                        "Transações",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                      children: [
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Geral",
+                          onPressed: () {
+                            navigationController.changePage("list-transactions");
+                          },
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
+                      leading: const Icon(Icons.keyboard_double_arrow_left_rounded),
+                      title: Text(
+                        "Taxas",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                      children: [
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Geral",
+                          onPressed: () {
+                            navigationController.changePage("list-transactions");
+                          },
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
+                      leading: const Icon(Icons.phone_iphone_outlined),
                       title: Text(
                         "Configurações",
                         style: TextStyle(
@@ -93,13 +150,6 @@ class Sidebar extends StatelessWidget {
                             navigationController.changePage("consumer-page");
                           },
                         ),
-                        MenuTile(
-                          isSubmenu: true,
-                          title: "Traduções",
-                          onPressed: () {
-                            navigationController.changePage("");
-                          },
-                        ),
                       ],
                     ),
                     ExpansionTile(
@@ -114,7 +164,7 @@ class Sidebar extends StatelessWidget {
                       children: [
                         MenuTile(
                           isSubmenu: true,
-                          title: "Lista",
+                          title: "Geral",
                           onPressed: () {
                             navigationController.changePage("list-suport");
                           },
@@ -164,7 +214,7 @@ class Sidebar extends StatelessWidget {
                         side: BorderSide.none,
                         padding: const EdgeInsets.symmetric(horizontal: 0.5),
                         label: Text(
-                          "8",
+                          "0",
                           style: Theme.of(context)
                               .textTheme
                               .labelMedium!

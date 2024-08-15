@@ -1,6 +1,10 @@
+import 'dart:convert';
+
+import 'package:core_dashboard/providers/user.dart';
 import 'package:core_dashboard/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import '../../theme/app_colors.dart';
 import '../constants/defaults.dart';
 import '../constants/ghaps.dart';
@@ -12,6 +16,9 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = Get.find<UserProvider>();
+    final userData = userProvider.userData;
+
     return Container(
       padding: const EdgeInsets.symmetric(
           horizontal: AppDefaults.padding, vertical: AppDefaults.padding),
@@ -88,10 +95,9 @@ class Header extends StatelessWidget {
                   if (!Responsive.isMobile(context))
                     IconButton(
                       onPressed: () {},
-                      icon: const CircleAvatar(
-                        backgroundImage: NetworkImage(
-                            "https://cdn.create.vista.com/api/media/small/339818716/stock-photo-doubtful-hispanic-man-looking-with-disbelief-expression"),
-                      ),
+                      icon: CircleAvatar(
+                        backgroundImage: userData!["avatar"] != null ? MemoryImage(base64Decode(userData["avatar"])) : null
+                      )
                     ),
                 ],
               ),

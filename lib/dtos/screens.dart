@@ -3,15 +3,21 @@ import 'dart:typed_data';
 
 class Screens {
   Map<String, Screen> screens;
+  
   Screens({required this.screens});
 
-
-  factory Screens.fromJson(Map<String, dynamic> json){
+  factory Screens.fromJson(Map<String, dynamic> json) {
     Map<String, Screen> screens = {};
-    for(final screen in json.keys){
-      screens[screen] =  Screen.fromJson(json[screen]);
+    for (final screen in json.keys) {
+      screens[screen] = Screen.fromJson(json[screen]);
     }
     return Screens(screens: screens);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "screens": screens.map((key, value) => MapEntry(key, value.toJson())),
+    };
   }
 }
 
@@ -24,12 +30,23 @@ class Screen {
   final List<FormStep>? formSteps;
   final Map<String, dynamic>? description;
   final Map<String, dynamic>? widgets;
-  final List? listData;
+  final List<dynamic>? listData;
   final Map<String, dynamic>? location;
 
-  Screen({this.title, this.backgroundImage, this.backgroundBlur = false, this.type, this.widgets, this.inputs, this.formSteps, this.listData, this.description, this.location});
+  Screen({
+    this.title,
+    this.backgroundImage,
+    this.backgroundBlur = false,
+    this.type,
+    this.widgets,
+    this.inputs,
+    this.formSteps,
+    this.listData,
+    this.description,
+    this.location,
+  });
 
-  factory Screen.fromJson(Map<String, dynamic> json){
+  factory Screen.fromJson(Map<String, dynamic> json) {
     return Screen(
       title: json['title'] ?? {},
       backgroundBlur: json['background_blur'],
@@ -46,9 +63,23 @@ class Screen {
           ? List<FormStep>.from(
               (json['data'] as List<dynamic>).map((value) => FormStep.fromJson(value)))
           : [],
-
-      location: json['location']
+      location: json['location'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "title": title,
+      "background_image": backgroundImage,
+      "background_blur": backgroundBlur,
+      "type": type,
+      "inputs": inputs != null ? inputs!.map((input) => input.toJson()).toList() : null,
+      "form_steps": formSteps != null ? formSteps!.map((step) => step.toJson()).toList() : null,
+      "description": description,
+      "widgets": widgets,
+      "list_data": listData,
+      "location": location,
+    };
   }
 }
 
@@ -65,7 +96,7 @@ class FormStep {
     required this.inputs,
   });
 
-  static FormStep isEmpty(){
+  static FormStep isEmpty() {
     return FormStep(step: 1, title: "", description: "", inputs: []);
   }
 
@@ -79,6 +110,15 @@ class FormStep {
       description: json['description'],
       inputs: inputs,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'step': step,
+      'title': title,
+      'description': description,
+      'inputs': inputs.map((input) => input.toJson()).toList(),
+    };
   }
 }
 

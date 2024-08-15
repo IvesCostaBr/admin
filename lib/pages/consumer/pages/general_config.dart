@@ -33,6 +33,7 @@ class _ConsumerGeneralConfigPageState extends State<ConsumerGeneralConfigPage> {
   @override
   Widget build(BuildContext context) {
     return GenericContainer(
+      text: "Configurações Aplicativo",
       content: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -53,17 +54,7 @@ class _ConsumerGeneralConfigPageState extends State<ConsumerGeneralConfigPage> {
                   );
                 }).toList(),
               ),
-              SingleChildScrollView(
-                child: selectedForm == 'General' ? GeneralConfigForm(onFieldChanged: _onFieldChanged) : ThemeConfigForm(onFieldChanged: _onFieldChanged)
-              ),
-              if (isFormChanged)
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: ElevatedButton(
-                    onPressed: _saveChanges,
-                    child: const Text('Atualizar'),
-                  ),
-                ),
+              selectedForm == 'General' ? GeneralConfigForm(onFieldChanged: _onFieldChanged) : ThemeConfigForm(onFieldChanged: _onFieldChanged),
             ],
           ),
       ),

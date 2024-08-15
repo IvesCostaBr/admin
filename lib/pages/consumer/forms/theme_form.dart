@@ -114,11 +114,10 @@ class _ThemeConfigFormState extends State<ThemeConfigForm> {
     }
   }
 
-  void _updateThemeData() {
+  void _updateThemeData() async {
     if (!_isFormValid) return;
 
-    configController.upadateThemeData({
-      'theme': {
+    await configController.upadateThemeData({
         'colors': {
           'primary': _primaryColor.value.toRadixString(16),
           'primaryVariant': _primaryVariantColor.value.toRadixString(16),
@@ -134,144 +133,47 @@ class _ThemeConfigFormState extends State<ThemeConfigForm> {
           'onError': _onErrorColor.value.toRadixString(16),
         },
         'font_family': _fontFamily,
-      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          flex: 2,
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildColorRow('Primary Color', _primaryColor, (color) => _primaryColor = color, _handleColorInputChange),
-                  _buildColorRow('Primary Variant Color', _primaryVariantColor, (color) => _primaryVariantColor = color, _handleColorInputChange),
-                  _buildColorRow('Secondary Color', _secondaryColor, (color) => _secondaryColor = color, _handleColorInputChange),
-                  _buildColorRow('Secondary Variant Color', _secondaryVariantColor, (color) => _secondaryVariantColor = color, _handleColorInputChange),
-                  _buildColorRow('Background Color', _backgroundColor, (color) => _backgroundColor = color, _handleColorInputChange),
-                  _buildColorRow('Surface Color', _surfaceColor, (color) => _surfaceColor = color, _handleColorInputChange),
-                  _buildColorRow('Error Color', _errorColor, (color) => _errorColor = color, _handleColorInputChange),
-                  _buildColorRow('On Primary Color', _onPrimaryColor, (color) => _onPrimaryColor = color, _handleColorInputChange),
-                  _buildColorRow('On Secondary Color', _onSecondaryColor, (color) => _onSecondaryColor = color, _handleColorInputChange),
-                  _buildColorRow('On Background Color', _onBackgroundColor, (color) => _onBackgroundColor = color, _handleColorInputChange),
-                  _buildColorRow('On Surface Color', _onSurfaceColor, (color) => _onSurfaceColor = color, _handleColorInputChange),
-                  _buildColorRow('On Error Color', _onErrorColor, (color) => _onErrorColor = color, _handleColorInputChange),
-                  const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    value: _fontFamily,
-                    onChanged: _handleFontFamilyChange,
-                    decoration: const InputDecoration(labelText: 'Font Family'),
-                    items: _fontFamilies.map((font) {
-                      return DropdownMenuItem<String>(
-                        value: font,
-                        child: Text(font),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: _isFormValid ? _updateThemeData : null,
-                    child: const Text('Update Theme'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
         const SizedBox(width: 10),
-        Expanded(
-          flex: 1,
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(8.0),
-              color: Colors.grey[200],
-            ),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _primaryColor,
-                  child: const Center(child: Text('Primary Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _primaryVariantColor,
-                  child: const Center(child: Text('Primary Variant Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _secondaryColor,
-                  child: const Center(child: Text('Secondary Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _secondaryVariantColor,
-                  child: const Center(child: Text('Secondary Variant Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _backgroundColor,
-                  child: const Center(child: Text('Background Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _surfaceColor,
-                  child: const Center(child: Text('Surface Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _errorColor,
-                  child: const Center(child: Text('Error Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _onPrimaryColor,
-                  child: const Center(child: Text('On Primary Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _onSecondaryColor,
-                  child: const Center(child: Text('On Secondary Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _onBackgroundColor,
-                  child: const Center(child: Text('On Background Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _onSurfaceColor,
-                  child: const Center(child: Text('On Surface Color')),
-                ),
-                Container(
-                  width: double.infinity,
-                  height: 50,
-                  color: _onErrorColor,
-                  child: const Center(child: Text('On Error Color')),
-                ),
-              ],
-            ),
+        Column(
+            children: [
+              _buildColorRow('Primary Color', _primaryColor, (color) => _primaryColor = color, _handleColorInputChange),
+              _buildColorRow('Primary Variant Color', _primaryVariantColor, (color) => _primaryVariantColor = color, _handleColorInputChange),
+              _buildColorRow('Secondary Color', _secondaryColor, (color) => _secondaryColor = color, _handleColorInputChange),
+              _buildColorRow('Secondary Variant Color', _secondaryVariantColor, (color) => _secondaryVariantColor = color, _handleColorInputChange),
+              _buildColorRow('Background Color', _backgroundColor, (color) => _backgroundColor = color, _handleColorInputChange),
+              _buildColorRow('Surface Color', _surfaceColor, (color) => _surfaceColor = color, _handleColorInputChange),
+              _buildColorRow('Error Color', _errorColor, (color) => _errorColor = color, _handleColorInputChange),
+              _buildColorRow('On Primary Color', _onPrimaryColor, (color) => _onPrimaryColor = color, _handleColorInputChange),
+              _buildColorRow('On Secondary Color', _onSecondaryColor, (color) => _onSecondaryColor = color, _handleColorInputChange),
+              _buildColorRow('On Background Color', _onBackgroundColor, (color) => _onBackgroundColor = color, _handleColorInputChange),
+              _buildColorRow('On Surface Color', _onSurfaceColor, (color) => _onSurfaceColor = color, _handleColorInputChange),
+              _buildColorRow('On Error Color', _onErrorColor, (color) => _onErrorColor = color, _handleColorInputChange),
+              const SizedBox(height: 20),
+              DropdownButtonFormField<String>(
+                value: _fontFamily,
+                onChanged: _handleFontFamilyChange,
+                decoration: const InputDecoration(labelText: 'Font Family'),
+                items: _fontFamilies.map((font) {
+                  return DropdownMenuItem<String>(
+                    value: font,
+                    child: Text(font),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _isFormValid ? _updateThemeData : null,
+                child: const Text('Atualizar'),
+              ),
+            ],
           ),
-        ),
       ],
     );
   }
