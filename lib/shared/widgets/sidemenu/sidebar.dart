@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:core_dashboard/controllers/config.dart';
 import 'package:core_dashboard/controllers/navigation.dart';
 import 'package:core_dashboard/pages/dashboard/widgets/theme_tabs.dart';
@@ -46,7 +48,7 @@ class Sidebar extends StatelessWidget {
                     horizontal: AppDefaults.padding,
                     vertical: AppDefaults.padding * 1.5,
                   ),
-                  child: Image.network(AppConfig.logo, height: 150, width: 220,),
+                  child: Image.memory(base64Decode(appData!.data.logo), height: 150, width: 220,),
                 ),
               ],
             ),
@@ -107,7 +109,7 @@ class Sidebar extends StatelessWidget {
                       ],
                     ),
                     ExpansionTile(
-                      leading: const Icon(Icons.keyboard_double_arrow_left_rounded),
+                      leading: const Icon(Icons.graphic_eq_outlined),
                       title: Text(
                         "Taxas",
                         style: TextStyle(
@@ -120,7 +122,7 @@ class Sidebar extends StatelessWidget {
                           isSubmenu: true,
                           title: "Geral",
                           onPressed: () {
-                            navigationController.changePage("list-transactions");
+                            navigationController.changePage("list-fees");
                           },
                         ),
                       ],

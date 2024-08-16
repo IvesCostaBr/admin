@@ -25,6 +25,7 @@ dependencies:
   image_picker: ^0.8.4+4
   flutter_json_viewer: ^1.0.1
   json_editor_flutter: ^1.4.2
+  universal_platform: ^1.1.0
 
 dev_dependencies:
   flutter_test:

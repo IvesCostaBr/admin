@@ -39,20 +39,23 @@ class _ConsumerGeneralConfigPageState extends State<ConsumerGeneralConfigPage> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DropdownButton<String>(
-                value: selectedForm,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedForm = newValue!;
-                  });
-                },
-                items: <String>['General', 'Theme']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DropdownButton<String>(
+                  value: selectedForm,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedForm = newValue!;
+                    });
+                  },
+                  items: <String>['General', 'Theme']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
               selectedForm == 'General' ? GeneralConfigForm(onFieldChanged: _onFieldChanged) : ThemeConfigForm(onFieldChanged: _onFieldChanged),
             ],

@@ -107,6 +107,25 @@ class _GeneralConfigFormState extends State<GeneralConfigForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            GestureDetector(
+              onTap: () => _pickImage(true),
+              child: Column(
+                children: [
+                  const Text('Logo'),
+                  _logoBase64 != null
+                      ? Container(
+                        padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(Radius.circular(12)),
+                            border: Border.all(color: Colors.black)
+                          ),
+                          child: Image.memory(base64Decode(_logoBase64!), height: 130, width: 130,))
+                      : const Text('No logo selected'),
+                  
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
             TextField(
               controller: appNameController,
               onChanged: _handleFieldChange,
@@ -137,32 +156,9 @@ class _GeneralConfigFormState extends State<GeneralConfigForm> {
               decoration: const InputDecoration(labelText: 'Home Page'),
             ),
             const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      const Text('Logo'),
-                      _logoBase64 != null
-                          ? Image.memory(base64Decode(_logoBase64!), height: 130, width: 130,)
-                          : const Text('No logo selected'),
-                      ElevatedButton(
-                        onPressed: () => _pickImage(true),
-                        child: const Text('Upload Logo'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed:_isFormModified ? () async => await _updateGeneralData() : null,
-                  child: const Text('Atualizar'),
-                ),
-              ],
+            ElevatedButton(
+              onPressed:_isFormModified ? () async => await _updateGeneralData() : null,
+              child: const Text('Atualizar'),
             ),
           ],
         ),

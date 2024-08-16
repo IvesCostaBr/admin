@@ -2,6 +2,7 @@ import 'package:core_dashboard/common/dio.dart';
 import 'package:core_dashboard/controllers/auth.dart';
 import 'package:core_dashboard/controllers/chat.dart';
 import 'package:core_dashboard/controllers/config.dart';
+import 'package:core_dashboard/controllers/fee.dart';
 import 'package:core_dashboard/controllers/navigation.dart';
 import 'package:core_dashboard/controllers/transaction.dart';
 import 'package:core_dashboard/controllers/user.dart';
@@ -16,4 +17,5 @@ injectDependencies(){
   Get.put(UserService(dio));
   Get.put(TransactionService(dio));
   Get.put(NavigationController());
+  Get.put(FeeService(dio));
 }

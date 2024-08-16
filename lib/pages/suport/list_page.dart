@@ -3,6 +3,7 @@ import 'package:core_dashboard/dtos/suport.dart';
 import 'package:core_dashboard/pages/suport/message_page.dart';
 import 'package:core_dashboard/shared/widgets/anothers/tags.dart';
 import 'package:core_dashboard/shared/widgets/container.dart';
+import 'package:core_dashboard/shared/widgets/tabs/table_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -18,98 +19,119 @@ class _SupportListPageState extends State<SupportListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-        GenericContainer(
-          text: "Atendimentos",
-          content: FutureBuilder<List<Support>>(
-            future: _chatService.getSuports(_selectedStatus),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Column(
-                  children: [
-                    SizedBox(height: 240),
-                    Center(child: CircularProgressIndicator()),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return const Center(child: Text('Erro ao carregar suportes'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('Nenhum suporte encontrado'));
-              } else {
-                final supports = snapshot.data!;
-                return  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: DropdownButton<String>(
-                          value: _selectedStatus,
-                          items: const [
-                            DropdownMenuItem(
-                              value: 'IN_OPEN',
-                              child: Text('EM ABERTO'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'COMPLETED',
-                              child: Text('FINALIZADO'),
-                            ),
-                            DropdownMenuItem(
-                              value: 'IN_PROGRESS',
-                              child: Text('EM ATENDIMENTO'),
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedStatus = value!;
-                            });
-                          },
+    return GenericContainer(
+      text: "Atendimentos",
+      content: FutureBuilder<List<Support>>(
+        future: _chatService.getSuports(_selectedStatus),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Column(
+              children: [
+                SizedBox(height: 240),
+                Center(child: CircularProgressIndicator()),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return const Center(child: Text('Erro ao carregar suportes'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: DropdownButton<String>(
+                      value: _selectedStatus,
+                      items: const [
+                        DropdownMenuItem(
+                          value: 'IN_OPEN',
+                          child: Text('EM ABERTO'),
                         ),
-                      ),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: DataTable(
-                          columns: const [
-                            DataColumn(label: Text('ID')),
-                            DataColumn(label: Text('Data de Criação')),
-                            DataColumn(label: Text('Data de Atualização')),
-                            DataColumn(label: Text('Usuário')),
-                            DataColumn(label: Text('Status')),
-                            DataColumn(label: Text('Ação')),
-                          ],
-                          rows: supports.map((support) {
-                            return DataRow(
-                              cells: [
-                                DataCell(Text(support.id)),
-                                DataCell(Text(DateFormat('dd/MM/yyyy HH:mm').format(support.createdAt!))),
-                                DataCell(support.updatedAt != null
-                                    ? Text(DateFormat('dd/MM/yyyy HH:mm').format(support.updatedAt!))
-                                    : const Text('-')),
-                                DataCell(GestureDetector(
-                                  onTap: () {print("detail user");},
-                                  child: Column(children: [
-                                    Text(support.owner["name"] ?? '-'),
-                                    Text(support.owner["document"] ?? '-')
-                                  ],),
-                                )),
-                                DataCell(classifyStatus(support.status)),
-                                DataCell(
-                                  IconButton(
-                                    icon: const Icon(Icons.phone, color: Colors.green,),
-                                    onPressed: () => Get.to(() => SupportChatPage(supportId: support.id)),
-                                  )
+                        DropdownMenuItem(
+                          value: 'COMPLETED',
+                          child: Text('FINALIZADO'),
+                        ),
+                        DropdownMenuItem(
+                          value: 'IN_PROGRESS',
+                          child: Text('EM ATENDIMENTO'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedStatus = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  const Center(child: Text('Nenhum suporte encontrado')),
+                ],
+              ),
+            );
+          } else {
+            final supports = snapshot.data!;
+            return ScrollConfiguration(
+                  behavior: CustomScrollBehavior(),
+                  child: Scrollbar(
+                  thumbVisibility: true,
+                  trackVisibility: true,
+                  interactive: true,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        headingRowColor: WidgetStateColor.resolveWith((states) => Theme.of(context).primaryColor),
+                        border: TableBorder.all(color: Theme.of(context).primaryColor),
+                        columns: const [
+                          DataColumn(label: Text('ID')),
+                          DataColumn(label: Text('Data de Criação')),
+                          DataColumn(label: Text('Data de Atualização')),
+                          DataColumn(label: Text('Usuário')),
+                          DataColumn(label: Text('Status')),
+                          DataColumn(label: Text('Ação')),
+                        ],
+                        rows: supports.map((support) {
+                          return DataRow(
+                            cells: [
+                              DataCell(Text(support.id)),
+                              DataCell(Text(DateFormat('dd/MM/yyyy HH:mm').format(support.createdAt!))),
+                              DataCell(support.updatedAt != null
+                                  ? Text(DateFormat('dd/MM/yyyy HH:mm').format(support.updatedAt!))
+                                  : const Text('-')),
+                              DataCell(
+                                GestureDetector(
+                                  onTap: () {
+                                    print("detail user");
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(support.owner["name"] ?? '-'),
+                                      Text(support.owner["document"] ?? '-'),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            );
-                          }).toList(),
-                        ),
+                              ),
+                              DataCell(classifyStatus(support.status)),
+                              DataCell(
+                                IconButton(
+                                  icon: const Icon(Icons.phone, color: Colors.green),
+                                  onPressed: () => Get.to(() => SupportChatPage(supportId: support.id)),
+                                ),
+                              ),
+                            ],
+                          );
+                        }).toList(),
                       ),
-                    ],
-                  );
-              }
-            },
-          ),
-        );
+                    ),
+                  ),
+                ),
+            );
+          }
+        },
+      ),
+    );
   }
 
   Widget classifyStatus(String status) {
@@ -125,4 +147,3 @@ class _SupportListPageState extends State<SupportListPage> {
     }
   }
 }
-

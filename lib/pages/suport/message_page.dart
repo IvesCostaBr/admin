@@ -1,12 +1,16 @@
+import 'dart:convert';
+import 'dart:io' as io;
+import 'dart:html';
+import 'dart:typed_data';
 import 'package:core_dashboard/controllers/chat.dart';
 import 'package:core_dashboard/dtos/chat.dart';
 import 'package:core_dashboard/providers/user.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
-import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:universal_platform/universal_platform.dart'; // Para verificar a plataforma
 
 class SupportChatPage extends StatefulWidget {
   final String supportId;
@@ -102,7 +106,7 @@ class _SupportChatPageState extends State<SupportChatPage> {
     }
   }
 
-  Future<void> _sendFile(String senderName, String id, File file) async {
+  Future<void> _sendFile(String senderName, String id, io.File file) async {
     final bytes = await file.readAsBytes();
     final base64File = base64Encode(bytes);
     final fileName = file.path.split('/').last;
@@ -126,10 +130,26 @@ class _SupportChatPageState extends State<SupportChatPage> {
   }
 
   Future<void> _pickFile(String userName, String userId) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      File file = File(result.files.single.path!);
-      await _sendFile(userName, userId, file);
+    if (UniversalPlatform.isWeb) {
+      // Web: Use FilePicker for web
+      final picked = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+          allowMultiple: false,
+          onFileLoading: (FilePickerStatus status) => print(status),
+          allowedExtensions: ['png', 'jpg', 'jpeg', 'heic']
+      );
+      if (picked != null) {
+        final bytes = picked.files.single.bytes;
+        await _sendFile(userName, userId, io.File.fromRawPath(bytes!));
+    
+      }
+    } else {
+      // Mobile: Use FilePicker for mobile
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null) {
+        io.File file = io.File(result.files.single.path!);
+        await _sendFile(userName, userId, file);
+      }
     }
   }
 
@@ -137,7 +157,7 @@ class _SupportChatPageState extends State<SupportChatPage> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      File file = File(pickedFile.path);
+      io.File file = io.File(pickedFile.path);
       await _sendFile(userName, userId, file);
     }
   }
@@ -161,12 +181,21 @@ class _SupportChatPageState extends State<SupportChatPage> {
   }
 
   Future<void> _downloadFile(String base64File, String fileName) async {
-    final bytes = base64Decode(base64File);
-
-    // Notifica o usuário que o download foi concluído
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Download concluído: $fileName')),
-    );
+    if (UniversalPlatform.isWeb) {
+      // Web: Use dart:html to download the file
+      final bytes = base64Decode(base64File);
+      final blob = Blob([Uint8List.fromList(bytes)]);
+      final url = Url.createObjectUrlFromBlob(blob);
+      final anchor = AnchorElement(href: url)
+        ..setAttribute("download", fileName)
+        ..click();
+      Url.revokeObjectUrl(url);
+    } else {
+      // Mobile: Show a snackbar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Download concluído: $fileName')),
+      );
+    }
   }
 
   @override
@@ -233,44 +262,24 @@ class _SupportChatPageState extends State<SupportChatPage> {
                                     onTap: () => _showFullImage(message.fileData!["base64"]!),
                                     child: Image.memory(
                                       base64Decode(message.fileData!["base64"]!),
-                                      height: 150, // altura desejada da imagem
-                                      width: 150, // largura desejada da imagem
-                                      fit: BoxFit.cover, // ajusta a imagem para cobrir a área disponível
+                                      height: 100,
+                                      width: 100,
+                                      fit: BoxFit.cover,
                                     ),
                                   )
-                                else if (message.event == 'file' && message.fileData != null)
-                                  // Renderiza o arquivo com um GestureDetector para download
-                                  GestureDetector(
-                                    onTap: () => _downloadFile(message.fileData!["base64"]!, message.fileData!["name"]!),
-                                    child: Row(
-                                      children: [
-                                        const Icon(Icons.file_download),
-                                        const SizedBox(width: 5),
-                                        Text(
+                                else if (message.event == 'file')
+                                  // Renderiza o link para download do arquivo
+                                  TextButton(
+                                    onPressed: () {
+                                      _downloadFile(
+                                          message.fileData!["base64"]!,
                                           message.fileData!["name"]!,
-                                          style: const TextStyle(
-                                            color: Colors.blue,
-                                            decoration: TextDecoration.underline,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      );
+                                    },
+                                    child: Text('Download ${message.fileData!["name"]}'),
                                   )
                                 else
-                                  Text(
-                                    message.value,
-                                    style: const TextStyle(
-                                      color: Colors.black87,
-                                    ),
-                                  ),
-                                const SizedBox(height: 4.0),
-                                Text(
-                                  DateTime.fromMillisecondsSinceEpoch(message.createdAt * 1000).toString(),
-                                  style: const TextStyle(
-                                    fontSize: 10.0,
-                                    color: Colors.black54,
-                                  ),
-                                ),
+                                  Text(message.value),
                               ],
                             ),
                           ),
@@ -278,67 +287,46 @@ class _SupportChatPageState extends State<SupportChatPage> {
                       },
                     ),
                   ),
-                  if (_isChatClosed)
-                    Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        'O chat foi encerrado.',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red,
-                        ),
-                      ),
-                    )
-                  else
-                    Container(
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Row(
+                  if (!_isChatClosed)
+                    Row(
                       children: <Widget>[
                         IconButton(
-                          icon: const Icon(Icons.photo_camera),
-                          onPressed: () => _pickImage(
-                              userData!["name"], userData["id"]),
+                          icon: const Icon(Icons.camera_alt),
+                          onPressed: () =>
+                              _pickImage(userData!["name"], userData["id"]),
                         ),
                         IconButton(
                           icon: const Icon(Icons.attach_file),
-                          onPressed: () => _pickFile(
-                              userData!["name"], userData["id"]),
+                          onPressed: ()  async =>
+                              await _pickFile(userData!["name"], userData["id"]),
                         ),
                         Expanded(
                           child: TextField(
                             controller: _messageController,
-                            style: const TextStyle(
-                              color: Colors.black
+                            decoration: const InputDecoration(
+                              hintText: 'Digite uma mensagem...',
                             ),
-                            decoration: InputDecoration(
-                              hintText: 'Digite sua mensagem...',
-                              hintStyle: const TextStyle(color: Colors.black),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
+                            onSubmitted: (_) => _sendMessage(
+                              userData!["name"],
+                              userData["id"],
                             ),
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.send, color: Colors.green,),
+                          icon: const Icon(Icons.send),
                           onPressed: () => _sendMessage(
-                              userData!["name"], userData["id"]),
+                            userData!["name"],
+                            userData["id"],
+                          ),
                         ),
                       ],
                     ),
-                  ),
                 ],
               )
             : Center(
-                child: _errorMessage.isNotEmpty
-                    ? Text(_errorMessage)
-                    : const CircularProgressIndicator(),
+                child: Text(_errorMessage.isNotEmpty
+                    ? _errorMessage
+                    : 'Conectando...'),
               ),
       ),
     );

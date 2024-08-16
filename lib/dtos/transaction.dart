@@ -4,20 +4,31 @@ class PersonData {
   final String? name;
   final String? document;
   final String? userId;
-  final Map<dynamic, dynamic>? accountData;
+  final Map<String, dynamic>? accountData;
 
   PersonData({this.name,this.document,this.accountData, this.userId});
 
-  factory PersonData.fromJson(Map<dynamic, dynamic> json){
+  factory PersonData.fromJson(Map<String, dynamic> json){
     return PersonData(
       accountData: json['account_data'],
-      name: json['account_data'],
+      name: json['name'],
       document: json['document'],
       userId: json['userId']
     );
   }
 }
 
+
+class Owner {
+  final String? name;
+  final String? email;
+
+  Owner({required this.name, required this.email});
+
+  factory Owner.fromJson(Map<String, dynamic> json){
+    return Owner(name: json["name"] ?? '', email: json["email"] ?? '');
+  }
+}
 
 
 class TransactionDTO {
@@ -30,11 +41,13 @@ class TransactionDTO {
   final int status;
   final String? description;
   final PersonData? payer;
+  final String? userId;
+  final Owner? owner;
   final PersonData? receiver;
   final Map<dynamic, dynamic>? depositData;
   final Map<dynamic, dynamic>? data;
 
-  TransactionDTO({required this.id, required this.action, required this.amount, required this.type, required this.status, required this.description, required this.payer, required this.receiver, required this.depositData, required this.data, required this.createdAt, this.updatedAt});
+  TransactionDTO({required this.id, this.owner, required this.userId, required this.action, required this.amount, required this.type, required this.status, required this.description, required this.payer, required this.receiver, required this.depositData, required this.data, required this.createdAt, this.updatedAt});
 
     String get typeFormated{
     switch (type){
@@ -76,6 +89,16 @@ class TransactionDTO {
       return "-";
     }
   }
+
+  String toMonetary(){
+    final formatter = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+    if (type != 0){
+      return formatter.format(amount);
+    }else{
+      return amount.toString();
+    }
+    
+  }
   
   String get statusFormated{
     switch (status){
@@ -102,7 +125,9 @@ class TransactionDTO {
       data: json['data'],
       depositData: json['deposit_data'],
       description: json['description'],
+      userId: json['user_id'],
       type: json['type'],
+      owner: json['owner'] != null ? Owner.fromJson(json['owner']) : null,
       createdAt: json["created_at"],
       updatedAt: json["updated_at"],
       status: json['status'],
