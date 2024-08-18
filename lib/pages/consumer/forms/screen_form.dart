@@ -16,6 +16,7 @@ class EditScreenForm extends StatefulWidget {
 
 class _EditScreenFormState extends State<EditScreenForm> {
   late String jsonString;
+  final TextEditingController _screenNameController = TextEditingController();
   final TextEditingController _jsonController = TextEditingController();
   final configController = Get.find<ConfigController>();
   bool isLoading = false;
@@ -23,26 +24,27 @@ class _EditScreenFormState extends State<EditScreenForm> {
   @override
   void initState() {
     super.initState();
+    _screenNameController.text = widget.screeName;
     jsonString = jsonEncode(widget.initialData);
     _jsonController.text = jsonString;
   }
 
   _updateFormData() async {
     try {
-        final decodedJson = jsonDecode(_jsonController.text);
-        if (decodedJson is Map<String, dynamic>) {
-          final result = await configController.updateScreen(widget.screeName, decodedJson);
-          if (result){
-            Get.snackbar("Sucesso", "Pagina Atualizada", backgroundColor: Colors.green);
-          }else{
-            throw Exception("");
-          }
+      final decodedJson = jsonDecode(_jsonController.text);
+      if (decodedJson is Map<String, dynamic>) {
+        final result = await configController.updateScreen(_screenNameController.text, decodedJson);
+        if (result) {
+          Get.snackbar("Sucesso", "Pagina Atualizada", backgroundColor: Colors.green);
         } else {
-          Get.snackbar("Error", "Estrutura JSON Invalida", backgroundColor: Colors.red);
+          throw Exception("");
         }
-      } catch (e) {
-        Get.snackbar("Error", "Erro ao realizar decoding: $e", backgroundColor: Colors.red);
+      } else {
+        Get.snackbar("Error", "Estrutura JSON Invalida", backgroundColor: Colors.red);
       }
+    } catch (e) {
+      Get.snackbar("Error", "Erro ao realizar decoding: $e", backgroundColor: Colors.red);
+    }
   }
 
   @override
@@ -63,6 +65,15 @@ class _EditScreenFormState extends State<EditScreenForm> {
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
+              TextField(
+                controller: _screenNameController,
+                decoration: const InputDecoration(
+                  labelText: 'screen name',
+                  hintText: 'nome da tela',
+                ),
+                // onChanged: (value) => _screenNameController.text = value
+              ),
+              const SizedBox(height: 12,),
               ConstrainedBox(
                 constraints: const BoxConstraints(
                   maxHeight: 300, // Ajuste o valor conforme necessário
@@ -73,7 +84,8 @@ class _EditScreenFormState extends State<EditScreenForm> {
                   enableValueEdit: true,
                   onChanged: (updatedText) {
                     setState(() {
-                      _jsonController.text = jsonEncode(updatedText);
+                      jsonString = jsonEncode(updatedText);
+                      _jsonController.text = jsonString;
                     });
                   },
                   json: jsonString,
@@ -83,7 +95,7 @@ class _EditScreenFormState extends State<EditScreenForm> {
               ElevatedButton(
                 onPressed: () async {
                   _updateFormData();
-                } ,
+                },
                 child: const Text('Atualizar'),
               ),
             ],

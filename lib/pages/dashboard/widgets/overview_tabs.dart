@@ -56,17 +56,17 @@ class _OverviewTabsState extends State<OverviewTabs>
             ),
             tabs: const [
               TabWithGrowth(
-                title: "Customers",
-                amount: "1,200",
+                title: "Usuários",
+                amount: "4",
                 growthPercentage: "20%",
               ),
               TabWithGrowth(
-                title: "Revenue",
+                title: "Movimentado",
                 iconSrc: "assets/icons/activity_light.svg",
                 iconBgColor: AppColors.secondaryLavender,
-                amount: "\$128K",
-                growthPercentage: "2.7%",
-                isPositiveGrowth: false,
+                amount: "R\$ 4.965,43",
+                growthPercentage: "40.7%",
+                isPositiveGrowth: true,
               ),
             ],
           ),

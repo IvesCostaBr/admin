@@ -128,6 +128,25 @@ class Sidebar extends StatelessWidget {
                       ],
                     ),
                     ExpansionTile(
+                      leading: const Icon(Icons.notification_add_outlined),
+                      title: Text(
+                        "Eventos",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                      children: [
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Geral",
+                          onPressed: () {
+                            navigationController.changePage("list-events");
+                          },
+                        ),
+                      ],
+                    ),
+                    ExpansionTile(
                       leading: const Icon(Icons.phone_iphone_outlined),
                       title: Text(
                         "Configurações",

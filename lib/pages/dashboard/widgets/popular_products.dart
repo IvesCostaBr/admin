@@ -27,7 +27,7 @@ class PopularProducts extends StatelessWidget {
               horizontal: AppDefaults.padding * 0.5,
             ),
             child: SectionTitle(
-              title: "Popular products",
+              title: "Ultimas Movimentações",
               color: AppColors.secondaryLavender,
             ),
           ),
@@ -39,8 +39,8 @@ class PopularProducts extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Products', style: Theme.of(context).textTheme.labelSmall),
-                Text('Earning', style: Theme.of(context).textTheme.labelSmall),
+                Text('Tipo', style: Theme.of(context).textTheme.labelSmall),
+                Text('Valor', style: Theme.of(context).textTheme.labelSmall),
               ],
             ),
           ),
@@ -53,10 +53,8 @@ class PopularProducts extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (_, index) {
               return PopularProductItem(
-                name: 'Crypter - NFT UI kit',
+                name: 'Cripto',
                 price: '\$2,453.80',
-                imageSrc:
-                    'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg',
                 isActive: index % 2 == 0,
                 onPressed: () {},
               );

@@ -26,6 +26,11 @@ dependencies:
   flutter_json_viewer: ^1.0.1
   json_editor_flutter: ^1.4.2
   universal_platform: ^1.1.0
+  firebase_database: ^10.5.1
+  firebase_database_web: ^0.2.4
+  firebase_messaging:
+  firebase_core: ^2.29.0
+  cloud_firestore:
 
 dev_dependencies:
   flutter_test:

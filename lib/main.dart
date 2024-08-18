@@ -1,8 +1,10 @@
 import 'package:core_dashboard/common/app_config.dart';
 import 'package:core_dashboard/common/dio.dart';
+import 'package:core_dashboard/common/firebase.dart';
 import 'package:core_dashboard/common/injectables.dart';
 import 'package:core_dashboard/common/routes.dart';
 import 'package:core_dashboard/pages/authentication/sign_in_page.dart';
+import 'package:core_dashboard/repository/consumer.dart';
 import 'package:core_dashboard/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,12 +12,21 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
+    FirebaseService().initialize();
+
+    try{
+      final urlApi = await ConsumerRepository().getConsumerById('h5IV6RD5tijWSCsKOcwb');
+    }catch (e){
+      print(e);
+    }
+    
+
     await dotenv.load(fileName: ".env");
 
     AppConfig.initialize(AppConfig(
-      apiBaseUrl: dotenv.env['API_BASE_URL'] ?? '',
-      authUrl: dotenv.env['AUTH_URL'] ?? '',
-      websocketBaseUrl: dotenv.env['WEBSOCKET_BASE_URL'] ?? ''
+      apiBaseUrl: dotenv.env['API_BASE_URL'] ?? 'https://api.onlinerifas.pro',
+      authUrl: dotenv.env['AUTH_URL'] ?? 'https://api.onlinerifas.pro',
+      websocketBaseUrl: dotenv.env['WEBSOCKET_BASE_URL'] ?? 'ws://api.onlinerifas.pro'
     ));
 
   setupDio();
@@ -31,7 +42,7 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       home: SignInPage(),
       theme: AppTheme.light(context),
-      // darkTheme: AppTheme.dark(context),
+      darkTheme: AppTheme.dark(context),
       getPages: Routes.routes,
     );
   }

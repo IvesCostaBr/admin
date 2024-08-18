@@ -9,12 +9,11 @@ class PopularProductItem extends StatefulWidget {
     super.key,
     required this.name,
     required this.price,
-    required this.imageSrc,
     this.isActive = true,
     this.onPressed,
   });
 
-  final String name, price, imageSrc;
+  final String name, price;
   final bool isActive;
   final Function()? onPressed;
 
@@ -41,7 +40,7 @@ class _PopularProductItemState extends State<PopularProductItem> {
         },
         child: Row(
           children: [
-            CustomerRoundedAvatar(imageSrc: widget.imageSrc),
+            const Icon(Icons.currency_bitcoin),
             gapW8,
             Expanded(
               child: Text(

@@ -27,7 +27,7 @@ class ProductOverviews extends StatelessWidget {
           Row(
             children: [
               const SectionTitle(
-                title: "Product views",
+                title: "Grafico",
                 color: AppColors.secondaryLavender,
               ),
               const Spacer(),

@@ -5,6 +5,7 @@ import 'package:core_dashboard/pages/consumer/pages/general_config.dart';
 import 'package:core_dashboard/pages/consumer/pages/pages.dart';
 import 'package:core_dashboard/pages/dashboard/dashboard_page.dart';
 import 'package:core_dashboard/pages/entry_point.dart';
+import 'package:core_dashboard/pages/event/list_event.dart';
 import 'package:core_dashboard/pages/fee/pages/list_fees.dart';
 import 'package:core_dashboard/pages/suport/list_page.dart';
 import 'package:core_dashboard/pages/transaction/list_transactions.dart';
@@ -28,5 +29,6 @@ final Map<String, Widget> pageRoutes = {
   "list-suport": SupportListPage(),
   "list-users": const ListUsersPage(),
   "list-transactions": const ListTransactionsPage(),
-  "list-fees": ListFeesPage()
+  "list-fees": ListFeesPage(),
+  "list-events": const LisEventsPage()
 };

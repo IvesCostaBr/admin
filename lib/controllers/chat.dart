@@ -45,7 +45,7 @@ class ChatService extends GetxController {
   }
 
   Future<List<Support>> getSuports(String status) async {
-    final response = await _dio.get("$apiBaseUrl/api/admin/suports?status=$status");
+    final response = await _dio.get("$apiBaseUrl/api/admin/suports/?status=$status");
     List<dynamic> data = response.data;
     final supports = data.map((value) => Support.fromJson(value)).toList();
     return supports;
