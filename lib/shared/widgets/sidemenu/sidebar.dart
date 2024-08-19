@@ -4,7 +4,6 @@ import 'package:core_dashboard/controllers/config.dart';
 import 'package:core_dashboard/controllers/navigation.dart';
 import 'package:core_dashboard/pages/dashboard/widgets/theme_tabs.dart';
 import 'package:core_dashboard/responsive.dart';
-import 'package:core_dashboard/shared/constants/config.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';

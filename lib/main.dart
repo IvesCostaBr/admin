@@ -26,7 +26,7 @@ void main() async {
     AppConfig.initialize(AppConfig(
       apiBaseUrl: dotenv.env['API_BASE_URL'] ?? 'https://api.onlinerifas.pro',
       authUrl: dotenv.env['AUTH_URL'] ?? 'https://api.onlinerifas.pro',
-      websocketBaseUrl: dotenv.env['WEBSOCKET_BASE_URL'] ?? 'ws://api.onlinerifas.pro'
+      websocketBaseUrl: dotenv.env['WEBSOCKET_BASE_URL'] ?? 'wss://api.onlinerifas.pro'
     ));
 
   setupDio();
