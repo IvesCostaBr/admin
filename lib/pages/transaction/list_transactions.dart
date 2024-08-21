@@ -25,7 +25,7 @@ class _ListTransactionsPageState extends State<ListTransactionsPage> {
       switch (status) {
         case 0:
           return PinTag(
-            color: Colors.yellowAccent,
+            color: Colors.orange,
             text: text,
           );
 
@@ -101,44 +101,49 @@ class _ListTransactionsPageState extends State<ListTransactionsPage> {
                   scrollDirection: Axis.vertical,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      headingRowColor: WidgetStateColor.resolveWith((states) => Theme.of(context).primaryColor),
-                      border: TableBorder.all(color: Theme.of(context).primaryColor),
-                      columns: const [
-                        DataColumn(label: Text('ID')),
-                        DataColumn(label: Text('Ação')),
-                        DataColumn(label: Text('Criado em')),
-                        DataColumn(label: Text('Ultima Atualização')),
-                        DataColumn(label: Text('Tipo')),
-                        DataColumn(label: Text('Descrição')),
-                        DataColumn(label: Text('Usuário')),
-                        DataColumn(label: Text('Valor')),
-                        DataColumn(label: Text('Status')),
-                      ],
-                      rows: transactions.map((transaction) {
-                        return DataRow(
-                          cells: [
-                          DataCell(Text(transaction.id)),
-                          DataCell(getAction(transaction.action)),
-                          DataCell(Text(transaction.createdAtFormated)),
-                          DataCell(Text(transaction.updatedAtFormated)),
-                          DataCell(Text(transaction.typeFormated)),
-                          DataCell(Text(transaction.description != null
-                              ? transaction.description!
-                              : transaction.generateDescription)),
-                          DataCell(transaction.owner != null
-                              ? Column(
-                                  children: [
-                                    Text(transaction.owner!.name ?? ''),
-                                    Text(transaction.owner!.email ?? ''),
-                                  ],
-                                )
-                              : Text('-')),
-                          DataCell(Text(transaction.toMonetary())),
-                          DataCell(getPinTag(
-                              transaction.status, transaction.statusFormated)),
-                        ]);
-                      }).toList(),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.2),
+                          borderRadius: const BorderRadius.all(Radius.circular(5))
+                      ),
+                      child: DataTable(
+                        columns: const [
+                          DataColumn(label: Text('ID')),
+                          DataColumn(label: Text('Ação')),
+                          DataColumn(label: Text('Criado em')),
+                          DataColumn(label: Text('Ultima Atualização')),
+                          DataColumn(label: Text('Tipo')),
+                          DataColumn(label: Text('Descrição')),
+                          DataColumn(label: Text('Usuário')),
+                          DataColumn(label: Text('Valor')),
+                          DataColumn(label: Text('Status')),
+                        ],
+                        rows: transactions.map((transaction) {
+                          return DataRow(
+                            cells: [
+                            DataCell(Text(transaction.id)),
+                            DataCell(getAction(transaction.action)),
+                            DataCell(Text(transaction.createdAtFormated)),
+                            DataCell(Text(transaction.updatedAtFormated)),
+                            DataCell(Text(transaction.typeFormated)),
+                            DataCell(Text(transaction.description != null
+                                ? transaction.description!
+                                : transaction.generateDescription)),
+                            DataCell(transaction.owner != null
+                                ? Column(
+                                    children: [
+                                      Text(transaction.owner!.name ?? ''),
+                                      Text(transaction.owner!.email ?? ''),
+                                    ],
+                                  )
+                                : Text('-')),
+                            DataCell(Text(transaction.toMonetary())),
+                            DataCell(getPinTag(
+                                transaction.status, transaction.statusFormated)),
+                          ]);
+                        }).toList(),
+                      ),
                     ),
                   ),
                 ),

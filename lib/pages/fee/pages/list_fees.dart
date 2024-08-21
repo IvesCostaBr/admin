@@ -37,52 +37,59 @@ class _ListFeesPageState extends State<ListFeesPage> {
                 final fees = snapshot.data!;
                 return  SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(label: Text('ID')),
-                      DataColumn(label: Text('Data de Criação')),
-                      DataColumn(label: Text('Data de Atualização')),
-                      DataColumn(label: Text('Valores')),
-                      DataColumn(label: Text('Tipo')),
-                      DataColumn(label: Text('Ações')),
-                    ],
-                    rows: fees.map((fee) {
-                      return DataRow(
-                        cells: [
-                          DataCell(Text(fee.id)),
-                          DataCell(Text(fee.createdAtFormated)),
-                           DataCell(Text(fee.updatedAtFormated)),
-                          DataCell(GestureDetector(
-                            onTap: () {print("detail user");},
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black),
-                                borderRadius: const BorderRadius.all(Radius.circular(12))
-                              ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                Text('Ver Valores'),
-                                SizedBox(width: 4,),
-                                Icon(Icons.remove_red_eye)
-                              ],),
-                            ),
-                          )),
-                          DataCell(classifyType(fee.action)),
-                          DataCell(
-                            Row(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.change_circle_outlined, color: Colors.green,),
-                                  onPressed: () => {},
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                        borderRadius: const BorderRadius.all(Radius.circular(5))
+                    ),
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text('ID')),
+                        DataColumn(label: Text('Data de Criação')),
+                        DataColumn(label: Text('Data de Atualização')),
+                        DataColumn(label: Text('Valores')),
+                        DataColumn(label: Text('Tipo')),
+                        DataColumn(label: Text('Ações')),
+                      ],
+                      rows: fees.map((fee) {
+                        return DataRow(
+                          cells: [
+                            DataCell(Text(fee.id)),
+                            DataCell(Text(fee.createdAtFormated)),
+                             DataCell(Text(fee.updatedAtFormated)),
+                            DataCell(GestureDetector(
+                              onTap: () {print("detail user");},
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black),
+                                  borderRadius: const BorderRadius.all(Radius.circular(12))
                                 ),
-                              ],
-                            )
-                          ),
-                        ],
-                      );
-                    }).toList(),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                  Text('Ver Valores'),
+                                  SizedBox(width: 4,),
+                                  Icon(Icons.remove_red_eye)
+                                ],),
+                              ),
+                            )),
+                            DataCell(classifyType(fee.action)),
+                            DataCell(
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.change_circle_outlined, color: Colors.green,),
+                                    onPressed: () => {},
+                                  ),
+                                ],
+                              )
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ),
                   ),
                 );
               }
@@ -100,7 +107,7 @@ class _ListFeesPageState extends State<ListFeesPage> {
       case 3:
         return const PinTag(color: Colors.grey, text: "CRIPTO ENTRADA");
       case 4:
-        return const PinTag(color: Colors.yellowAccent, text: "CRIPTO SAIDA");
+        return const PinTag(color: Colors.orange, text: "CRIPTO SAIDA");
       case 5:
         return const PinTag(color: Colors.black, text: "BOLETO ENTRADA");
       case 6:

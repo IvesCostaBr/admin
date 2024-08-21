@@ -2,7 +2,6 @@ import 'package:core_dashboard/controllers/auth.dart';
 import 'package:core_dashboard/controllers/config.dart';
 import 'package:core_dashboard/providers/user.dart';
 import 'package:core_dashboard/shared/constants/config.dart';
-import 'package:core_dashboard/shared/constants/defaults.dart';
 import 'package:core_dashboard/shared/constants/extensions.dart';
 import 'package:core_dashboard/shared/constants/ghaps.dart';
 import 'package:core_dashboard/theme/app_colors.dart';
@@ -60,20 +59,14 @@ class _SignInPageState extends State<SignInPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(AppConfig.logo, fit: BoxFit.fill,),
-                      Text(
+                      const Text(
                         'Entrar',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineLarge
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35, color: Colors.black),
                       ),
                       const Divider(),
-                      Text(
+                      const Text(
                         'Digite o seu email',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.black)
                       ),
                       gapH16,
                       TextFormField(

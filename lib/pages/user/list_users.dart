@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:core_dashboard/common/routes_config.dart';
 import 'package:core_dashboard/controllers/user.dart';
 import 'package:core_dashboard/dtos/user.dart';
 import 'package:core_dashboard/shared/widgets/anothers/tags.dart';
@@ -52,35 +53,50 @@ class _ListUsersPageState extends State<ListUsersPage> {
                 scrollDirection: Axis.vertical,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Avatar')),
-                      DataColumn(label: Text('Nome')),
-                      DataColumn(label: Text('Documento')),
-                      DataColumn(label: Text('Email')),
-                      DataColumn(label: Text('Data de Nascimento')),
-                      DataColumn(label: Text('Criado em')),
-                      DataColumn(label: Text('Tipo')),
-                    ],
-                    rows: users.map((user) {
-                      return DataRow(cells: [
-                        DataCell(
-                          user.avatar != null && user.avatar!.isNotEmpty
-                              ? CircleAvatar(
-                                  backgroundImage: MemoryImage(base64Decode(user.avatar!)),
-                                )
-                              : const CircleAvatar(
-                                  child: Icon(Icons.person),
-                                ),
-                        ),
-                        DataCell(Text(user.name ?? 'Nome não fornecido')),
-                        DataCell(Text(user.document ?? 'Documento não fornecido')),
-                        DataCell(Text(user.email)),
-                        DataCell(Text(user.birthData ?? 'Data não fornecida')),
-                        DataCell(Text(user.createdAt != null ? DateTime.fromMillisecondsSinceEpoch(user.createdAt!.toInt() * 1000).toString() : '')),
-                        DataCell(PinTag(color: user.isAdmin ? Colors.redAccent : Colors.grey, text: user.isAdmin ? 'Admin' : 'Normal',)),
-                      ]);
-                    }).toList(),
+                  child: Container(
+                    
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.2),
+                        borderRadius: const BorderRadius.all(Radius.circular(5))
+                    ),
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text('AVATAR')),
+                        DataColumn(label: Text('NOME')),
+                        DataColumn(label: Text('DOCUMENTO')),
+                        DataColumn(label: Text('EMAIL')),
+                        DataColumn(label: Text('DATA DE NASCIMENTO')),
+                        DataColumn(label: Text('CRIADO EM')),
+                        DataColumn(label: Text('TIPO')),
+                      ],
+                      rows: users.map((user) {
+                        
+                        return DataRow(
+                          cells: [
+                          DataCell(
+                            user.avatar != null && user.avatar!.isNotEmpty
+                                ? CircleAvatar(
+                                    backgroundImage: MemoryImage(base64Decode(user.avatar!)),
+                                  )
+                                : const CircleAvatar(
+                                    child: Icon(Icons.person),
+                                  ),
+                          ),
+                          DataCell(
+                            GestureDetector(
+                              child: Text(user.name ?? 'Nome não fornecido'),
+                              onTap: () {
+                                Get.toNamed(AppRouter.userDetail, arguments: {"user": user.toJson()});
+                          })),
+                          DataCell(Text(user.document ?? 'Documento não fornecido')),
+                          DataCell(Text(user.email)),
+                          DataCell(Text(user.birthData ?? 'Data não fornecida')),
+                          DataCell(Text(user.createdAt != null ? DateTime.fromMillisecondsSinceEpoch(user.createdAt!.toInt() * 1000).toString() : '')),
+                          DataCell(PinTag(color: user.isAdmin ? Colors.redAccent : Colors.grey, text: user.isAdmin ? 'Admin' : 'Normal',)),
+                        ]);
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),

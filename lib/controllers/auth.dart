@@ -100,7 +100,7 @@ class AuthService extends GetxController {
   Future<Map<String, dynamic>> fetchUserData() async {
     try {
       final response = await _dio.get(
-        '$baseUrl/api/users/',
+        '$baseUrl/api/users',
       );
       final data = response.data;
       userProvider.setUserData(data);

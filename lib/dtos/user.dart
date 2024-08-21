@@ -42,6 +42,7 @@ class UserDTO {
       'name': name,
       'document': document,
       'email': email,
+      'avatar': avatar,
       'birth_data': birthData,
       'consumer_id': consumerId,
       'created_at': createdAt,

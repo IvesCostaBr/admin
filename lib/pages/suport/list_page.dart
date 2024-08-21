@@ -77,52 +77,57 @@ class _SupportListPageState extends State<SupportListPage> {
                   trackVisibility: true,
                   interactive: true,
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
+                    scrollDirection: Axis.horizontal,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        headingRowColor: WidgetStateColor.resolveWith((states) => Theme.of(context).primaryColor),
-                        border: TableBorder.all(color: Theme.of(context).primaryColor),
-                        columns: const [
-                          DataColumn(label: Text('ID')),
-                          DataColumn(label: Text('Data de Criação')),
-                          DataColumn(label: Text('Data de Atualização')),
-                          DataColumn(label: Text('Usuário')),
-                          DataColumn(label: Text('Status')),
-                          DataColumn(label: Text('Ação')),
-                        ],
-                        rows: supports.map((support) {
-                          return DataRow(
-                            cells: [
-                              DataCell(Text(support.id)),
-                              DataCell(Text(DateFormat('dd/MM/yyyy HH:mm').format(support.createdAt!))),
-                              DataCell(support.updatedAt != null
-                                  ? Text(DateFormat('dd/MM/yyyy HH:mm').format(support.updatedAt!))
-                                  : const Text('-')),
-                              DataCell(
-                                GestureDetector(
-                                  onTap: () {
-                                    print("detail user");
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(support.owner["name"] ?? '-'),
-                                      Text(support.owner["document"] ?? '-'),
-                                    ],
+                      child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.2),
+                              borderRadius: const BorderRadius.all(Radius.circular(5))
+                          ),
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(label: Text('ID')),
+                            DataColumn(label: Text('Data de Criação')),
+                            DataColumn(label: Text('Data de Atualização')),
+                            DataColumn(label: Text('Usuário')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('Ação')),
+                          ],
+                          rows: supports.map((support) {
+                            return DataRow(
+                              cells: [
+                                DataCell(Text(support.id)),
+                                DataCell(Text(DateFormat('dd/MM/yyyy HH:mm').format(support.createdAt!))),
+                                DataCell(support.updatedAt != null
+                                    ? Text(DateFormat('dd/MM/yyyy HH:mm').format(support.updatedAt!))
+                                    : const Text('-')),
+                                DataCell(
+                                  GestureDetector(
+                                    onTap: () {
+                                      print("detail user");
+                                    },
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(support.owner["name"] ?? '-'),
+                                        Text(support.owner["document"] ?? '-'),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              DataCell(classifyStatus(support.status)),
-                              DataCell(
-                                IconButton(
-                                  icon: const Icon(Icons.phone, color: Colors.green),
-                                  onPressed: () => Get.to(() => SupportChatPage(supportId: support.id)),
+                                DataCell(classifyStatus(support.status)),
+                                DataCell(
+                                  IconButton(
+                                    icon: const Icon(Icons.phone, color: Colors.green),
+                                    onPressed: () => Get.to(() => SupportChatPage(supportId: support.id)),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
+                              ],
+                            );
+                          }).toList(),
+                        ),
                       ),
                     ),
                   ),
@@ -137,7 +142,7 @@ class _SupportListPageState extends State<SupportListPage> {
   Widget classifyStatus(String status) {
     switch (status) {
       case "IN_OPEN":
-        return const PinTag(color: Colors.yellow, text: "EM ABERTO");
+        return const PinTag(color: Colors.orange, text: "EM ABERTO");
       case "COMPLETED":
         return const PinTag(color: Colors.green, text: "FINALIZADO");
       case "IN_PROGRESS":

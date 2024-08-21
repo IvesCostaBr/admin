@@ -9,6 +9,7 @@ import 'package:core_dashboard/pages/event/list_event.dart';
 import 'package:core_dashboard/pages/fee/pages/list_fees.dart';
 import 'package:core_dashboard/pages/suport/list_page.dart';
 import 'package:core_dashboard/pages/transaction/list_transactions.dart';
+import 'package:core_dashboard/pages/user/detail_user_page.dart';
 import 'package:core_dashboard/pages/user/list_users.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class Routes {
     GetPage(name: AppRouter.home, page: () => EntryPoint()),
     GetPage(name: AppRouter.signIn, page: () => SignInPage()),
     GetPage(name: AppRouter.signUp, page: () => const RegisterPage()),
+    GetPage(name: AppRouter.userDetail, page: () => UserDetailPage()),
   ];
 }
 

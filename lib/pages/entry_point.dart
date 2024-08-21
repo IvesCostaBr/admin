@@ -50,26 +50,29 @@ class EntryPoint extends StatelessWidget {
           return Scaffold(
             key: _drawerKey,
             drawer: Responsive.isMobile(context) ? Sidebar() : null,
-            body: Row(
-              children: [
-                if (Responsive.isDesktop(context)) Sidebar(),
-                if (Responsive.isTablet(context)) const TabSidebar(),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Header(drawerKey: _drawerKey),
-                      Expanded(
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 1360),
-                          child: Obx(() {
-                            return pageRoutes[navigationController.currentPage.value] ?? ListView(children: [DashboardPage()]);
-                          }),
+            body: Container(
+              color: Colors.grey,
+              child: Row(
+                children: [
+                  if (Responsive.isDesktop(context)) Sidebar(),
+                  if (Responsive.isTablet(context)) const TabSidebar(),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Header(drawerKey: _drawerKey),
+                        Expanded(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 1360),
+                            child: Obx(() {
+                              return pageRoutes[navigationController.currentPage.value] ?? ListView(children: [DashboardPage()]);
+                            }),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         }
