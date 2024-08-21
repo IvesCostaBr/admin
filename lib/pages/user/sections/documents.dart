@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'dart:html' as html;
 
 Color generateRandomColor() {
   final random = Random();
@@ -204,8 +205,18 @@ class _DocumentModalViewerState extends State<DocumentModalViewer> {
     return result;
   }
 
-  Future<void> _downloadFile(String base64Content, String fileName) async {
+ Future<void> _downloadFile(String base64Content, String fileName) async {
+  if (GetPlatform.isWeb) {
+    final bytes = base64Decode(base64Content);
+    final blob = html.Blob([bytes]);
+    final url = html.Url.createObjectUrlFromBlob(blob);
+    final anchor = html.AnchorElement(href: url)
+      ..setAttribute('download', fileName)
+      ..click();
+    html.Url.revokeObjectUrl(url);
+  } else {
     try {
+      await Permission.storage.request();
       if (await Permission.storage.request().isGranted) {
         final bytes = base64Decode(base64Content);
         final dir = await getExternalStorageDirectory();
@@ -221,6 +232,7 @@ class _DocumentModalViewerState extends State<DocumentModalViewer> {
       Get.snackbar('Erro', 'Falha ao salvar o arquivo');
     }
   }
+}
 
   bool _isImage(String extension) {
     final imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp'];
@@ -273,9 +285,16 @@ class _DocumentModalViewerState extends State<DocumentModalViewer> {
               ),
             )
           else
-            ElevatedButton(
-              onPressed: () => _downloadFile(base64Content, fileName),
-              child: const Text("Baixar Arquivo"),
+            Column(
+              children: [
+                const Text('Nome do Arquivo'),
+                Text(fileName),
+                const SizedBox(height: 6,),
+                ElevatedButton(
+                  onPressed: () => _downloadFile(base64Content, fileName),
+                  child: const Text("Baixar Arquivo"),
+                ),
+              ],
             ),
           const SizedBox(height: 20),
           Row(

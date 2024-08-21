@@ -33,6 +33,7 @@ dependencies:
   firebase_messaging:
   firebase_core: ^2.29.0
   cloud_firestore:
+  html:
 
 dev_dependencies:
   flutter_test:
