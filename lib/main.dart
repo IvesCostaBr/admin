@@ -41,8 +41,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: SignInPage(),
-      theme: AppTheme.light(context),
-      darkTheme: AppTheme.dark(context),
+      theme: AppTheme.light(context), // Tema claro
+      darkTheme: AppTheme.dark(context), // Tema escuro
+      themeMode: ThemeMode.system,
       getPages: Routes.routes,
     );
   }

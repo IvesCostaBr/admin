@@ -24,4 +24,23 @@ class UserService extends GetxController {
     final documents = data.map((value) => DocumentDTO.fromJson(value)).toList();
     return documents;
   }
+
+  Future<List<UserDTO>> getUsersAdmin() async {
+    final response = await _dio.get("$baseurl/api/admin/users?admin=true");
+    List<dynamic> data = response.data["data"];
+    final usersAdmin = data.map((value) => UserDTO.fromJson(value)).toList();
+    return usersAdmin;
+  }
+
+  Future<bool> createUserAdmin(Map<String, dynamic> data) async {
+    try{
+      await _dio.post(
+        "$baseurl/api/admin/users",
+        data: data
+      );
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
 }

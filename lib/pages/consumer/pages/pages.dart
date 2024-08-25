@@ -24,6 +24,15 @@ class _ConsumePagesConfigPageState extends State<ConsumePagesConfigPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ElevatedButton(
+            onPressed: (){
+              Get.to(() => EditScreenForm(
+                  initialData: {},
+                  screeName: '',
+                ));
+              },
+              child: const Row(children: [Icon(Icons.add), Text('Criar Tela')],)),
+          const SizedBox(height: 8,),
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(), // Desabilita o scroll interno
@@ -73,14 +82,6 @@ class _ConsumePagesConfigPageState extends State<ConsumePagesConfigPage> {
               );
             },
           ),
-          const SizedBox(height: 30,),
-          ElevatedButton(onPressed: (){
-            Get.to(() => EditScreenForm(
-              initialData: {},
-              screeName: '',
-            ));
-
-          }, child: const Row(children: [Icon(Icons.add), Text('Criar Tela')],))
         ],
       ),
     );

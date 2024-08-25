@@ -76,7 +76,7 @@ class _EditScreenFormState extends State<EditScreenForm> {
               const SizedBox(height: 12,),
               ConstrainedBox(
                 constraints: const BoxConstraints(
-                  maxHeight: 300, // Ajuste o valor conforme necessário
+                  maxHeight: 600, // Ajuste o valor conforme necessário
                 ),
                 child: JsonEditor(
                   enableHorizontalScroll: true,

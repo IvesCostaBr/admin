@@ -1,6 +1,5 @@
 import 'package:core_dashboard/controllers/fee.dart';
 import 'package:core_dashboard/dtos/fee.dart';
-import 'package:core_dashboard/pages/suport/message_page.dart';
 import 'package:core_dashboard/shared/widgets/anothers/tags.dart';
 import 'package:core_dashboard/shared/widgets/container.dart';
 import 'package:flutter/material.dart';

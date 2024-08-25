@@ -11,7 +11,11 @@ void snackSuccess(String? title, String message){
   if(title == null){
     titleText = "Sucesso";
   }
-  Get.snackbar(titleText!, message, backgroundColor: Colors.green);
+  Get.snackbar(
+    icon: const Icon(Icons.check_box_rounded),
+    padding: const EdgeInsets.only(top: 12, bottom: 12),
+    margin: EdgeInsets.only(left: 1200),
+    titleText!, message, backgroundColor: Colors.green, colorText: Colors.white);
 }
 
 void snackWarning(String? title, String message){
@@ -19,5 +23,7 @@ void snackWarning(String? title, String message){
   if(title == null){
     titleText = "Sucesso";
   }
-  Get.snackbar(titleText!, message, backgroundColor: Colors.orange);
+  Get.snackbar(
+    icon: const Icon(Icons.error),
+    titleText!, message, backgroundColor: Colors.orange, colorText: Colors.white);
 }

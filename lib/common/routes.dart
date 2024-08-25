@@ -1,7 +1,10 @@
 import 'package:core_dashboard/common/routes_config.dart';
 import 'package:core_dashboard/pages/authentication/register_page.dart';
 import 'package:core_dashboard/pages/authentication/sign_in_page.dart';
+import 'package:core_dashboard/pages/consumer/pages/detail_consumer.dart';
 import 'package:core_dashboard/pages/consumer/pages/general_config.dart';
+import 'package:core_dashboard/pages/consumer/pages/list_consumer.dart';
+import 'package:core_dashboard/pages/user/list_admin_users.dart';
 import 'package:core_dashboard/pages/consumer/pages/pages.dart';
 import 'package:core_dashboard/pages/dashboard/dashboard_page.dart';
 import 'package:core_dashboard/pages/entry_point.dart';
@@ -32,5 +35,8 @@ final Map<String, Widget> pageRoutes = {
   "list-users": const ListUsersPage(),
   "list-transactions": const ListTransactionsPage(),
   "list-fees": ListFeesPage(),
-  "list-events": const LisEventsPage()
+  "list-events": const LisEventsPage(),
+  "consumer-detail": const ConsumerDetailPage(),
+  "list-admin-users": const ListUsersAdminPage(),
+  "list-consumers": const ListConsumerPage()
 };

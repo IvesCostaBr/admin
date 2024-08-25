@@ -3,10 +3,23 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class GenericContainer extends StatelessWidget {
+class GenericContainer extends StatefulWidget {
   final Widget content;
   final String? text;
   const GenericContainer({super.key, required this.content,this.text});
+
+  @override
+  State<GenericContainer> createState() => _GenericContainerState();
+}
+
+class _GenericContainerState extends State<GenericContainer> {
+  int _updateKey = 0;
+
+  void _refreshContent() {
+    setState(() {
+      _updateKey++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,16 +28,25 @@ class GenericContainer extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.4),
+                color: Get.isDarkMode ? Colors.black.withOpacity(0.4) : Colors.white,
                 borderRadius: const BorderRadius.all(Radius.circular(12)),
               ),
               child: Column(
                 children: [
-                  Text(text ?? '', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const SizedBox.shrink(),
+                      Text(widget.text ?? '', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),),
+                      ElevatedButton(
+                        onPressed: (){ _refreshContent();}, child: const Row(children: [Icon(Icons.refresh), Text('Atualizar')],))
+                    ],
+                  ),
                   const SizedBox(height: 15,),
                   Expanded(
                 child: ListView(
-                  children: [content],
+                  key: ValueKey(_updateKey),
+                  children: [widget.content],
                 ),
               ),
                 ],

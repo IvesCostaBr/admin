@@ -3,6 +3,7 @@ import 'package:core_dashboard/dtos/screens.dart';
 
 
 class AppData {
+  final String? name;
   final String consumerId;
   final Data data;
   final ThemeModel theme;
@@ -10,6 +11,7 @@ class AppData {
   final Map<String, String> images;
 
   AppData({
+    this.name,
     required this.consumerId,
     required this.data,
     required this.theme,
@@ -20,6 +22,7 @@ class AppData {
   factory AppData.fromJson(Map<String, dynamic> json) {
     return AppData(
       consumerId: json['id'],
+      name: json['name'] ?? '',
       data: Data.fromJson(json['data']),
       theme: ThemeModel.fromJson(json['theme']),
       screens: Screens.fromJson(json["screens"]).screens,

@@ -47,7 +47,7 @@ class FeeDTO{
     return {
       'id':  id,
       'values': values?.toJson(),
-      'action':  action?.toString(),
+      'action':  action.toString(),
       'consumer_id': consumerId,
       'created_at':  createdAt.toString(),
     };
@@ -75,9 +75,9 @@ class DynamicValues {
 
   Map<String, dynamic> toJson() {
     return {
-      'dynamic_value':  dynamicValue?.toString(),
-      'fixed_value': fixedValue?.toString(),
-      'min_dynamic_value': minDynamicValue?.toString(),
+      'dynamic_value':  dynamicValue.toString(),
+      'fixed_value': fixedValue.toString(),
+      'min_dynamic_value': minDynamicValue.toString(),
     };
   }
 }

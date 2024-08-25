@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:core_dashboard/controllers/config.dart';
-import 'dart:typed_data';
 import 'dart:convert' show base64Decode, base64Encode;
 import 'package:flutter/foundation.dart' show kIsWeb;
 

@@ -86,6 +86,13 @@ class Sidebar extends StatelessWidget {
                             navigationController.changePage("list-users");
                           },
                         ),
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Usuários Admin",
+                          onPressed: () {
+                            navigationController.changePage("list-admin-users");
+                          },
+                        ),
                       ],
                     ),
                     ExpansionTile(
@@ -146,6 +153,24 @@ class Sidebar extends StatelessWidget {
                       ],
                     ),
                     ExpansionTile(
+                      leading: const Icon(Icons.shield_moon),
+                      title: Text(
+                        "Admin",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).textTheme.bodyMedium!.color,
+                        ),
+                      ),
+                      children: [
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Lista Consumers",
+                          onPressed: () {
+                            navigationController.changePage("list-consumers");
+                          },
+                        ),
+                      ]),
+                    ExpansionTile(
                       leading: const Icon(Icons.phone_iphone_outlined),
                       title: Text(
                         "Configurações",
@@ -159,17 +184,23 @@ class Sidebar extends StatelessWidget {
                           isSubmenu: true,
                           title: "Geral",
                           onPressed: () {
+                            navigationController.changePage("consumer-detail");
+                          },
+                        ),
+                        MenuTile(
+                          isSubmenu: true,
+                          title: "Configurações APP",
+                          onPressed: () {
                             navigationController.changePage("consumer-config");
                           },
                         ),
                         MenuTile(
                           isSubmenu: true,
                           title: "Telas",
-                          count: 16,
                           onPressed: () {
                             navigationController.changePage("consumer-page");
                           },
-                        ),
+                        )
                       ],
                     ),
                     ExpansionTile(
