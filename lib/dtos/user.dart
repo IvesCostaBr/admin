@@ -6,6 +6,7 @@ class UserDTO {
   final String consumerId;
   final double? createdAt;
   final bool isAdmin;
+  final int status;
   final String id;
   final String? avatar;
 
@@ -18,7 +19,8 @@ class UserDTO {
     this.createdAt,
     required this.id,
     required this.isAdmin,
-    this.avatar
+    this.avatar,
+    this.status = 1
   });
 
   // Método para converter de JSON para o objeto UserDTO
@@ -32,7 +34,8 @@ class UserDTO {
       createdAt: json['created_at'],
       id: json['id'],
       avatar: json['avatar'],
-      isAdmin: json['is_admin'] ?? false
+      isAdmin: json['is_admin'] ?? false,
+      status: json['status'] ?? 1
     );
   }
 
@@ -46,6 +49,7 @@ class UserDTO {
       'birth_data': birthData,
       'consumer_id': consumerId,
       'created_at': createdAt,
+      'status': status,
       'id': id,
     };
   }

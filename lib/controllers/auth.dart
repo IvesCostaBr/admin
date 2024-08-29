@@ -99,6 +99,7 @@ class AuthService extends GetxController {
 
   Future<Map<String, dynamic>> fetchUserData() async {
     try {
+      isLoading.value = true;
       final response = await _dio.get(
         '$baseUrl/api/users',
       );
@@ -113,6 +114,8 @@ class AuthService extends GetxController {
       } else {
         throw Exception('${e.response?.data ?? e.message}');
       }
+    }finally{
+      isLoading.value = false;
     }
   }
 }

@@ -71,7 +71,7 @@ class Screen {
       "background_blur": backgroundBlur,
       "type": type,
       "inputs": inputs != null ? inputs!.map((input) => input.toJson()).toList() : null,
-      "form_steps": formSteps != null ? formSteps!.map((step) => step.toJson()).toList() : null,
+      "data": formSteps != null ? formSteps!.map((step) => step.toJson()).toList() : null,
       "description": description,
       "widgets": widgets,
       "list_data": listData,

@@ -51,7 +51,7 @@ class EntryPoint extends StatelessWidget {
             key: _drawerKey,
             drawer: Responsive.isMobile(context) ? Sidebar() : null,
             body: Container(
-              color: Colors.grey,
+              color: Colors.grey.withOpacity(0.5),
               child: Row(
                 children: [
                   if (Responsive.isDesktop(context)) Sidebar(),
@@ -64,7 +64,11 @@ class EntryPoint extends StatelessWidget {
                           child: ConstrainedBox(
                             constraints: const BoxConstraints(maxWidth: 1360),
                             child: Obx(() {
-                              return pageRoutes[navigationController.currentPage.value] ?? ListView(children: [DashboardPage()]);
+                              try {
+                                return pageRoutes[navigationController.currentPage.value] ?? ListView(children: [DashboardPage()]);
+                              } catch (e) {
+                                return Center(child: Text('Erro: $e'));
+                              }
                             }),
                           ),
                         ),

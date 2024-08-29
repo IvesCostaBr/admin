@@ -29,6 +29,7 @@ class UserDetailPage extends StatefulWidget {
 
 class _UserDetailPageState extends State<UserDetailPage> {
   // Initialize the controller
+  final userService = Get.find<UserService>();
   final UserDetailController controller = Get.put(UserDetailController());
 
   @override
@@ -76,7 +77,18 @@ class _UserDetailPageState extends State<UserDetailPage> {
                               const SizedBox(height: 4),
                               Text(widget.userId!.email ?? '#', style: TextStyle(color: Colors.grey[700])),
                               const SizedBox(height: 8),
+                              const SizedBox(
+                                height: 8,
+                              ),
                               const Text("EM ANALISE", style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold)),
+                              ElevatedButton(onPressed: () async {
+                                await userService.changeUserStaus(widget.userId!.id, 2);
+                                setState(() {
+                                  
+                                });
+                              }, child: Text('Liberar'), style: ButtonStyle(
+                                backgroundColor: WidgetStatePropertyAll(Colors.green)
+                              ),)
                             ],
                           ),
                         ],

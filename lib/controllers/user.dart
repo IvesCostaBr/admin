@@ -43,4 +43,26 @@ class UserService extends GetxController {
       return false;
     }
   }
+
+  Future<bool> updateStatusDocument(String docid, int newStatus) async {
+    try{
+      await _dio.put(
+        "$baseurl/api/admin/users/documents/$docid?new_status=$newStatus",
+      );
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
+
+  Future<bool> changeUserStaus(String userId, int newStatus) async {
+    try{
+      await _dio.put(
+        "$baseurl/api/admin/users/$userId/status?new_status=$newStatus",
+      );
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
 }
